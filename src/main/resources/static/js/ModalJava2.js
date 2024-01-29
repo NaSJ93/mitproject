@@ -22,7 +22,8 @@ addEventListener("DOMContentLoaded",function(){ //문서가 불러와지면
         modal.style.display="none";
     });
 
-    btnConfirm.addEventListener("click",function(){ //입력 확인 버튼 클릭시
+    btnConfirm.addEventListener("click",function(e){ //입력 확인 버튼 클릭시
+        e.preventDefault();
         /*var enterdText = textInput.value;  // 모달창의 textInput에 입력된 value를 enterText에 저장
 
         const outputContainer = document.createElement('div'); //html에 div타입의 객채 생성

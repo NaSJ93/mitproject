@@ -199,6 +199,8 @@ public class RestCont {
         mainserv.updateInven(itemCode,(inven.getInventory()+inputQty));
         Date now=new Date();
         mainserv.updateQuanDate(itemCode, now,inputQty);
+
+
     }
 
     //출고수량 등록

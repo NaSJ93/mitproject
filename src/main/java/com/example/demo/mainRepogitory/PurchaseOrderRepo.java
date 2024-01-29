@@ -45,6 +45,12 @@ public interface PurchaseOrderRepo extends JpaRepository<PurchaseOrderSheet, Pur
     @Query(value ="select * from purchase_order_sheet where invoice_date is null and purchase_date is not null " ,nativeQuery = true)
     List<PurchaseOrderSheet> findNotStarInvoiceDate();
 
+
+
+
+//명세서 발행
+    @Query(value ="update purchase_order_sheet set invoice_date=:date where purchase_code=:code",nativeQuery = true)
+    void startInvoice(@Param("date") Date date,@Param("code") String code);
 /*
 
 
@@ -57,9 +63,7 @@ public interface PurchaseOrderRepo extends JpaRepository<PurchaseOrderSheet, Pur
     @Query(value ="select * from purchase_order_sheet where invoice_date is not null " ,nativeQuery = true)
     List<PurchaseOrderSheet> findnyInvoiceDateIsNotNull();
 
-//명세서 발행
-    @Query(value ="update purchase_order_sheet set invoice_date=:date where purchase_code=:code",nativeQuery = true)
-    void startInvoice(@Param("date") Date date,@Param("code") String code);*/
+*/
 
 
 

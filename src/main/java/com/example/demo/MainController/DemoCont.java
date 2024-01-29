@@ -725,7 +725,7 @@ public class DemoCont {
     public void sdfsdfd(){     }
 
 
-    @PostMapping("/tables3-3") //조달계획등록 페이지
+    @PostMapping("/tables3-3") //자재출고
     public String outbound(Model m, @RequestParam(name = "fromDate", defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dat1,
                                    @RequestParam(name = "toDate", defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dat2) {
         /*

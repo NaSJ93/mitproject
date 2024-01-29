@@ -310,7 +310,7 @@ public class MainservImpl implements Mainserv {
 
     @Override
     public void StartInvoice(java.util.Date date, String code) {
-        //purchaseOrderRepo.startInvoice(date,code);
+        purchaseOrderRepo.startInvoice(date,code);
     }
 
     @Override
