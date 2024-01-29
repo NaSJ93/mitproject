@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<th:block th:replace="~{/basic::setContent(~{::content})}">
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body id="page-top">
+<th:block th:fragment="content">
+    <title>자재관리3-2</title>
+
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+                    <!-- Page Heading 해당페이지 안내문구-->                    
+                    <br><h1 class="h1 mb-0 text-gray-800"><center>자재출고</center></h1><br>
+
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+            <!-- <h4 class="m-0 font-weight-bold text-primary" >출고자재 관리</h4><br> -->
+
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <form action="/tables3-3" method="post">
+                        <label for="fromDate">시작 날짜:</label>
+                        <input type="date" id="fromDate" name="fromDate" required>
+
+                        <label for="toDate">종료 날짜:</label>
+                        <input type="date" id="toDate" name="toDate" required>
+
+                        <button type="submit" class="btn btn-primary btn-icon-split">
+                            <span class="text">조회</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 출고자재 관리 테이블 -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>품목코드</th>
+                    <th>품목명</th>
+                    <th>소요량(EA)</th>
+                    <th>생산요청일</th>
+                    <th>기초재고(EA)</th>
+                    <th>출고수량(EA)</th>
+                    <th>출고마감</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="a:${list}">
+                    <td th:text="${a.itemCode}">BA001</td>
+                    <td th:text="${a.itemName}">메인보드1호</td>
+                    <td th:text="${a.itemCount}">10</td>
+                    <td th:text="${#dates.format(a.productionDate,'yyyy-MM-dd')}">2024-01-15</td>
+                    <td th:text="${a.inventory}">12</td>
+                    <td><input type="number" placeholder="출고수량입력" th:id="'inputQty-' + ${a.itemCode}"></td>
+                    <!--<td><input type="number" id="BA001_output" placeholder="출고수량입력"></td>-->
+                    <td><button class="btn btn-primary btn-icon-split"
+                                th:if="${a.itemCode != null}"
+                                th:attr="data-item-code=${a.itemCode}" onclick="submitForm(this)"><span class="text">출고처리</span></button></td>
+                    <!--<td><button class="btn btn-primary btn-icon-split" onclick="processOutput('BA001', '메인보드1호')"><span class="text">출고처리</span></button></td>-->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    </div>
+    <!-- /.container-fluid -->
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- 출고처리 자바스크립트 -->
+    <script>
+    <!--    function processOutput(itemCode, itemName) {
+            var outputElement = document.getElementById(itemCode + '_output');
+            var initialStockElement = document.getElementById(itemCode + '_initialStock');
+            var demandElement = document.getElementById(itemCode + '_demand');
+            var row = outputElement.parentNode.parentNode;
+
+            // 빈값일 때 경고창을 띄우고 처리 중단
+            if (outputElement.value.trim() === '') {
+                alert('출고수량을 입력하세요.');
+                return;
+            }
+
+            var initialStock = parseInt(initialStockElement.innerText, 10);
+            var outputQuantity = parseInt(outputElement.value, 10);
+            var demandQuantity = parseInt(demandElement.innerText, 10);
+
+            // 출고수량이 기초재고보다 작거나 같을 때 출고처리 가능
+            if (!isNaN(initialStock) && !isNaN(outputQuantity) && outputQuantity <= initialStock) {
+                if (outputQuantity < demandQuantity) {
+                    alert('품목코드 ' + itemCode + ' ' + itemName + ' 출고수량이 소요량보다 작습니다. 출고수량을 확인해주세요.');
+                } else {
+                    alert('품목코드 ' + itemCode + ' ' + itemName + ' 출고처리 되었습니다.');
+                    outputElement.value = '';  // 출고수량 입력칸 초기화
+                    row.classList.add('completed');  // 완료된 행에 completed 클래스 추가
+                    row.style.display = 'none';  // 완료된 행 숨기기
+                }
+            } else {
+                alert('출고수량이 기초재고보다 많습니다. 출고수량을 확인해주세요.');
+            }
+        }
+
+        // 초기에 완료된 품목 숨김
+        document.addEventListener('DOMContentLoaded', function() {
+            var completedRows = document.querySelectorAll('.completed');
+            completedRows.forEach(function(row) {
+                row.style.display = 'none';
+            });
+        });-->
+    </script>
+
+
+    <script>
+        console.log('0');
+        function submitForm(button) {
+        console.log('1');
+            var itemCode = button.getAttribute('data-item-code');
+            var inputElement = document.getElementById('inputQty-' + itemCode);
+       console.log(itemCode);
+       console.log(inputElement);
+
+            if (inputElement) {
+                var inputQty = inputElement.value;
+                console.log(inputQty);
+            } else {
+                console.error('inputElement가 null이거나 undefined입니다.');
+                return; // 중단: inputQty를 정의할 수 없으므로 더 이상 진행하지 않음
+            }
+
+            // 데이터 생성
+            var data = {
+                itemCode: itemCode,
+                inputQty: parseInt(inputQty)
+            };
+            console.log(data);
+            // POST 요청 보내기
+            fetch('/insertOutbound', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 성공적으로 처리된 경우에 실행할 코드
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                // 오류 발생 시에 실행할 코드
+                console.error('Error:', error);
+            });
+        }
+    </script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
+
+</th:block>
+</body>
+</th:block>
+</html>

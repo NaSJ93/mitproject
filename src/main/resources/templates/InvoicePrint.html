@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<th:block th:replace="~{/basic::setContent(~{::content})}">
+<head>
+    <meta charset="utf-8">
+
+</head>
+<body id="page-top">
+<th:block th:fragment="content">
+    <title>거래 명세서 인쇄</title>
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link  href="/css/modal.css" rel="stylesheet" type="text/css">
+    <style>
+        table{font-size: 90%; border-collapse : collapse; margin : auto; text-align:center;}
+        tr{height:30px;}
+        a { text-decoration: none; }
+        a:visited {color: red;}
+        .bb  {border-top: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;}
+        .bc  {border-top: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;}
+        #printBtn{
+            width:100px;
+            height:40px;
+            margin-left:18.27%;
+        }
+        .btn_open_modal{
+            width:100px;
+            height:40px;
+        }
+    </style>
+
+                    <!-- Page Heading 해당페이지 안내문구-->                    
+                    <br><h1 class="h1 mb-0 text-gray-800"><center>거래 명세서 인쇄</center></h1><br>
+                    <div id="print">
+                        <table cellpadding="5px" border="-1">
+                            <colgroup>
+                                <col width="8%">
+                                <col width="14%">
+                                <col width="14%">
+                                <col width="14%">
+                                <col width="14%">
+                                <col width="14%">
+                                <col width="14%">
+                            </colgroup>
+                            <tr>
+                                <td align="center" COLSPAN="7" ROWSPAN="2" class="bb" style="color:#000000"><div style=font-size:14pt><strong>거래명세서</strong></div></td>
+                            </tr>
+                            <tr>
+                            </tr>
+                            <tr>
+                                <td align="left"  class="bc" style="color:#000000" colspan="2">사업자등록번호</td>
+                                <td align="left"  class="bc" style="color:#000000" colspan="2">123-45-67890</td>
+                                <td align="center" COLSPAN="3" ROWSPAN="1" class="bb" style="color:#000000">2024년 01월 15일</td>
+                            </tr>
+                            <tr>
+                                <td align="left"  class="bc" style="color:#000000">상호</td>
+                                <td align="left"  class="bb" style="color:#000000">㈜신.생.아</td>
+                                <td align="left"  class="bb" style="color:#000000">성명</td>
+                                <td align="left"  class="bc" style="color:#000000">나승정</td>
+                                <td align="center" COLSPAN="3" ROWSPAN="1" class="bb" style="color:#000000">(주) 제이아이테크 귀하</td>
+                            </tr>
+                            <tr>
+                                <td align="left"  class="bc" style="color:#000000">연락처</td>
+                                <td align="left"  class="bc" style="color:#000000">010-1111-2222</td>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="3" ROWSPAN="1" class="bb" style="color:#000000">아래와 같이 계산합니다.</td>
+                            </tr>
+                            <tr>
+                                <td align="center" COLSPAN="7" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="left"  class="bc" style="color:#000000">품목명</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">품목코드</td>
+                                <td align="left"  class="bc" style="color:#000000">수량</td>
+                                <td align="left"  class="bc" style="color:#000000">단가</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">금액</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">브라켓1호</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">CB001</td>
+                                <td align="right"  class="bc" style="color:#000000">150</td>
+                                <td align="right"  class="bc" style="color:#000000">4,000</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">600,000</td>
+                    
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">브라켓2호</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">CB002</td>
+                                <td align="right"  class="bb" style="color:#000000">200</td>
+                                <td align="right"  class="bb" style="color:#000000">7,000</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">1,400,000</td>
+                    
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                    
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                    
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="right"  class="bb" style="color:#000000">&nbsp;</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="center" COLSPAN="3" ROWSPAN="1" class="bb" style="color:#000000">계</td>
+                                <td align="right"  class="bb" style="color:#000000">350</td>
+                                <td align="right"  class="bb" style="color:#000000">11,000</td>
+                                <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">2,000,000</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <button id="printBtn" onclick="printPage()">인쇄</button>
+                    <button type="button" class="btn_open_modal">메일 발송</button>     
+
+    <!-- 모달 시작 -->
+    <div class="modal">
+        <div class="modal_body"> 
+            <!-- //모달의 바디 (시작) -->
+            
+            <h2>메일 발송. </h2>
+            
+            거래처 메일<input type="text" ><br>
+            담당자 메일<input type="text" ><br>
+            비밀번호<input type="password" ><br>
+            첨부파일<input type="file" ><br>
+            <button class="btn_confirm">발송</button>     
+            <button class="btn_close_modal">닫기</button>       
+        </div>
+        <!-- //모달의 바디(끝) -->
+    </div>
+    <!-- 모달 끝 -->                
+    <!--모달-->
+    <script src="/js/ModalJava2.js"></script>
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
+    <script>
+        function printPage(){
+            var initBody = document.body.innerHTML; //body영역 저장
+            window.onbeforeprint = function () { //프린터 출력 전 이벤트
+            document.body.innerHTML = document.getElementById('print').innerHTML; //원하는 영역 지정 'div_print'
+        }
+        window.onafterprint = function () { //프린터 출력 후 이벤트
+            document.body.innerHTML = initBody;
+            
+        }
+            window.print();
+            window.location.reload();
+        }  
+    </script>
+</th:block>
+</body>
+</th:block>
+</html>

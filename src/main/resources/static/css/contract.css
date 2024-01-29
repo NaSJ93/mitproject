@@ -1,0 +1,86 @@
+/* 공통 스타일 */
+
+/* 테이블 전체를 감싸는 클래스 추가 */
+.table-container {
+    margin: auto; /* 가로 중앙 정렬을 위한 마진 설정 */
+    max-width: 100%; /* 테이블 최대 너비 설정 (원하는 너비로 조절) */
+    height: 950px;
+    overflow-x: hidden;
+}
+
+/* 테이블에 대한 스타일 조정 */
+.table-bordered {
+    width: 100%; /* 부모 요소에 꽉 차도록 설정 */
+    border-collapse: collapse; /* 테두리가 겹치지 않도록 설정 */
+}
+
+/* 테이블 셀 스타일 */
+.table-bordered th,
+.table-bordered td {
+    padding: 5px; /* 셀 안의 내용과 테두리 간격 조정 */
+    text-align: center; /* 가로 중앙 정렬 */
+    vertical-align: middle; /* 세로 중앙 정렬 */
+    border: 1px solid #ddd; /* 테두리 스타일 지정 */
+    white-space: nowrap; /* 텍스트가 너무 길어질 경우 줄 바꿈 방지 */
+}
+
+/* 입력 필드 공통 스타일 */
+.table-bordered input[type="text"],
+#contractFileInput input[type="file"] {
+    width: 100%; /* 100% 너비로 설정 */
+    box-sizing: border-box; /* box-sizing을 border-box로 유지 */
+}
+
+/* 특이사항 텍스트 영역 스타일 */
+.significant {
+    width: 100%;
+    box-sizing: border-box; /* box-sizing을 border-box로 유지 */
+    margin: 10px 0;
+    height: 150px; /* 높이 조절 */
+    resize: none; /* 사용자가 수직으로만 리사이즈할 수 있도록 설정 */
+    overflow-y: auto; /* 내용이 영역을 넘어갈 경우 스크롤 표시 */
+    overflow-x: hidden; /* 가로 스크롤 방지 */
+}
+
+/* 공통 버튼 스타일 */
+.btn_Contract,
+#contractFileInput label,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+    background-color: #2653d4;
+    display: inline-block;
+    padding: 5px 10px; /* 적절한 여백 설정 */
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+/* 버튼 타입의 input 요소 호버 효과 */
+.btn_Contract:hover,
+#contractFileInput label:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover {
+    background-color: #4e73df;
+}
+
+/* 텍스트 색상 스타일 */
+.Text_Color {
+    color: #4e73df;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 400;
+}
+/* ////////////////////////////////////////////////////// */
+
+/* 버튼 개별 스타일 */
+.btn_Contract {
+    float: right; /* 오른쪽 정렬 */
+    margin-right: 15px; /* 우측 마진 설정 */
+}
+input[readonly] {
+    border: none;
+    outline: none; /* 선택 효과 제거 */
+  }

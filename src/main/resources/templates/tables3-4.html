@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<th:block th:replace="~{/basic::setContent(~{::content})}">
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body id="page-top">
+<th:block th:fragment="content">
+    <title>현황관리 리포트(재고금액)</title>
+    <style>
+        #scroll {
+            width: 100%;
+            height: 500px;
+            overflow-y: scroll;
+        }
+    </style>
+
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Page Heading 해당페이지 안내문구-->
+    <br><h1 class="h1 mb-0 text-gray-800"><center>현황관리 리포트(재고금액)</center></h1><br>
+
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <form id="InvenSearch" onsubmit="event.preventDefault(); sendRequest(); openList();">
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="vertical-align: middle; text-align: center;">기간</th>
+                        <th style="vertical-align: middle;">시작일자 : <input type="date" id="startDate"> ~
+                            종료일자 : <input type="date" id="endDate">
+                        </th>
+
+
+                    </tr>
+                    <tr>
+                        <th style="vertical-align: middle; text-align: center;">품목구분</th>
+                        <th><label for="selectBoxLarge">대분류:</label>
+
+                            <select id="selectBoxLarge" name="selectedLargeItemCode" onchange="sendLarge()">
+                                <option value="allLarge" selected>대분류(전체)</option>
+                                <option th:each="largeItem : ${largeItems}" th:value="${largeItem.itemCodeLarge}" th:text="${largeItem.itemCodeLarge}" th:selected="${selectedLargeItemCode == largeItem.itemCodeLarge}"></option>
+                            </select>
+
+                            <label for="selectBoxMedium">중분류:</label>
+                            <select id="selectBoxMedium" name="selectedMediumItemCode">
+                                <option value="allMedium">중분류(전체)</option>
+                                <option th:each="mediumItem : ${mediumItems}" th:value="${mediumItem.itemCodeMedium}" th:text="${mediumItem.itemCodeMedium}"></option>
+
+                            </select>
+
+                            <button class="btn btn-primary btn-icon-split" type="submit">
+                                <span class="text">조회</span></button>
+                        </th>
+                    </tr>
+                </table>
+            </form>
+
+        </div>
+        <div id="popup" class="popup" style="display: none;">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <h5 class="m-0 font-weight-bold text-primary" >품목 리스트</h5><br>
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+
+                        <thead>
+                        <tr>
+                            <th>품목코드</th>
+                            <th>품목명</th>
+                            <th>단가(원)</th>
+                            <th>기초수량(EA)</th>
+                            <th>입고수량(EA)</th>
+                            <th>출고수량(EA)</th>
+                            <th>재고수량(EA)</th>
+                            <th>재고금액</th>
+                        </tr>
+                        </thead>
+
+                        <tbody id="resultContainer"></tbody>
+                    </table>
+                </div> <!--테이블 리스폰시브 끝-->
+
+                <div style="width: 50%; margin: 0 auto;">
+                    <canvas id="InChart" width="100" height="100"></canvas>
+                </div>
+            </div><!--카드 바디 끝-->
+        </div><!--팝업 끝-->
+    </div><!--DataTales Example 끝 -->
+
+    <script>
+        function sendLarge() {
+        console.log(' 함수가 호출되었습니다.');
+
+            var selectedLargeItemCode = document.getElementById('selectBoxLarge').value;
+            console.log(selectedLargeItemCode);
+
+            $.ajax({
+                type: 'POST',
+                url: '/getMediumItems',
+                data: { selectedLargeItemCode: selectedLargeItemCode },
+                success: function(response) {
+                    updateMediumSelectBox(response);
+
+                },
+                error: function(error) {
+
+                }
+            });
+        }
+
+
+        document.getElementById('selectBoxLarge').addEventListener('change', function () {
+            sendLarge();
+        });
+
+        function updateMediumSelectBox(mediumItems) {
+
+        var selectBoxMedium = document.getElementById('selectBoxMedium');
+        selectBoxMedium.innerHTML = "";
+
+        // 전체 옵션 추가
+        var allOption = document.createElement("option");
+        allOption.value = "allMedium";
+        allOption.text = "중분류(전체)";
+        selectBoxMedium.appendChild(allOption);
+
+        // 중분류 목록 추가
+        mediumItems.forEach(function(mediumItem) {
+            var option = document.createElement("option");
+            option.value = mediumItem.itemCodeMedium;
+            option.text = mediumItem.itemCodeMedium;
+            selectBoxMedium.appendChild(option);
+        });
+    }
+    </script>
+
+
+
+
+
+
+
+    <script>
+        function sendRequest() {
+        var startDate = document.getElementById("startDate").value;
+        var endDate = document.getElementById("endDate").value;
+        var selectBoxLarge = document.getElementById("selectBoxLarge").value;
+        var selectBoxMedium = document.getElementById("selectBoxMedium").value;
+
+        var formData = new FormData();
+        formData.append('startDate', startDate);
+        formData.append('endDate', endDate);
+        formData.append('selectBoxLarge', selectBoxLarge);
+        formData.append('selectBoxMedium', selectBoxMedium);
+
+        // AJAX를 사용하여 서버로 데이터 전송
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/InvenSearch", true);
+<!--                    xhr.setRequestHeader("Content-Type", "application/json");-->
+
+
+<!--                    var data = JSON.stringify({-->
+<!--                        startDate: startDate,-->
+<!--                        endDate: endDate,-->
+<!--                        selectBoxLarge: selectBoxLarge,-->
+<!--                        selectBoxMedium: selectBoxMedium-->
+<!--                    });-->
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var responseData = JSON.parse(xhr.responseText);
+                    displayDataOnPage(responseData);
+
+                    openList();
+                } else {
+                    console.error('Error:', xhr.status);
+                }
+            }
+        };
+
+        xhr.send(formData);
+        console.log(formData);
+    }
+
+         function openList() {
+            document.getElementById('popup').style.display = 'block';
+        }
+
+
+        function displayDataOnPage(data) {
+        var resultContainer = document.getElementById("resultContainer");
+
+        resultContainer.innerHTML = "";
+
+        if (data && data.length > 0) {
+            data.forEach(function (item) {
+                var row = document.createElement("tr");
+
+                var itemCodeCell = document.createElement("td");
+                itemCodeCell.innerText = item.itemCode;
+                row.appendChild(itemCodeCell);
+
+                var itemNameCell = document.createElement("td");
+                itemNameCell.innerText = item.itemName;
+                row.appendChild(itemNameCell);
+
+                var priceCell = document.createElement("td");
+                priceCell.innerText = item.price;
+                row.appendChild(priceCell);
+
+                var initialQuantityCell = document.createElement("td");
+                initialQuantityCell.innerText = item.initialQuantity;
+                row.appendChild(initialQuantityCell);
+
+                var inboundQuantityCell = document.createElement("td");
+                inboundQuantityCell.innerText = item.inboundQuantity;
+                row.appendChild(inboundQuantityCell);
+
+                var outboundQuantityCell = document.createElement("td");
+                outboundQuantityCell.innerText = item.outboundQuantity;
+                row.appendChild(outboundQuantityCell);
+
+                var inventoryCell = document.createElement("td");
+                inventoryCell.innerText = item.initialQuantity + item.inboundQuantity - item.outboundQuantity;
+                row.appendChild(inventoryCell);
+
+                var inventoryAmountCell = document.createElement("td");
+                inventoryAmountCell.innerText = (item.initialQuantity + item.inboundQuantity - item.outboundQuantity)*item.price;
+                row.appendChild(inventoryAmountCell);
+
+
+
+
+                resultContainer.appendChild(row);
+            });
+        } else {
+            console.error("Invalid data structure or empty data!");
+        }
+
+        console.log(item)
+    }
+    </script>
+
+
+
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        var ctx = document.getElementById('InChart').getContext('2d');
+
+            var totalIn=20;
+
+            var complete = [1,3,5,10,1];
+
+            var completeD =[];
+
+
+
+            for(var i=0; i<complete.length; i++) {
+                completeD.push((complete[i]/totalIn)*100);
+                '%';
+            }
+
+
+
+            var data = {
+                labels: ['메인보드(A)', '메모리카드(S)', '브라켓(B)', '나사(M)', '플렛(F)'],
+                datasets: [
+                    {
+                        backgroundColor: ['rgba(32, 103, 236, 0.8)','rgba(208, 47, 132, 0.8)','rgba(78, 177, 78, 0.8)','rgba(133, 27, 228, 0.8)','rgba(62, 193, 193, 0.8)'],
+                        borderColor: 'rgba(0, 0, 0, 1)',
+                        data: completeD,
+                    },
+
+
+                    ],
+                };
+
+
+
+                var InChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: data,
+                    options: {
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '중분류',
+                                fontSize: 25,
+                            },
+                            tooltip: {
+                                enabled:false
+                            },
+                            datalabels: {
+                                color: 'white',
+                                formatter: function (value) {
+                                        return value.toFixed(2) + '%';
+                                },
+                                offset: 10,
+
+
+                            },
+                    },
+                },
+                plugins: [ChartDataLabels],
+            });
+        });
+    </script>
+
+
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
+
+
+</th:block>
+</body>
+</th:block>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<th:block th:replace="~{/basic::setContent(~{::content})}">
+<head>
+    <meta charset="utf-8">
+</head>
+<body id="page-top">
+<th:block th:fragment="content">
+    <title>품목정보등록1-2</title>
+
+    <style>
+        .tab_menu { position: relative; }
+        .tab_menu .btn { font-size: 14px; cursor: pointer; margin-right: 0px; padding: 20px; border: 2px solid #ddd; }
+        .tab_menu .btn.is_on { font-size: 14px; font-weight: bold; color: #4e73df; background-color: white; border-bottom: 1px solid #ddd; }
+        .cont_area { margin-top: 0px; }
+        .cont { display: none; color: #fff; text-align: center; width: 100%; height: 100%; border: 2px solid #ddd; padding: 30px; }
+
+
+        /* 텍스트영역 스타일 */
+        textarea{
+            width:350px;
+            height:30px;
+            resize: vertical;
+        /*  resize:none; // 크기고정
+            resize: horizontal; // 가로크기만 조절가능
+            resize: vertical;  //세로크기만 조절가능  */
+        }
+
+    </style>
+
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="css/modal.css" rel="stylesheet">
+    <link href="css/contract.css" rel="stylesheet">
+
+                    <!-- Page Heading 해당페이지 안내문구-->                    
+                    <br><h1 class="h1 mb-0 text-gray-800"><center>계약등록</center></h1><br>
+
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+
+
+        <div class="tab_menu">
+            <a href="#tab1" class="btn is_on" onclick="changeTab('tab1')">계약등록</a>
+            <a href="#tab2" class="btn" onclick="changeTab('tab2')">계약조회</a>
+
+
+            <div class="cont_area">
+                <div id="tab1" class="cont">
+                    <form action="/abcd" method="post" enctype="multipart/form-data">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>계약번호</th>
+                                <th>거래처</th>
+                                <th>사업자등록번호</th>
+                                <th>계약일</th>
+                                <th>계약서</th>
+                                <th>특이사항</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><input type="text" id="contractCode" name="contractCode"/></td>
+                                <td>
+                                    <select id="vendorDropdown" class="vender_Name" onchange="RegisterNumber()" name="s1">
+                                        <option value="">거래처선택</option>
+                                        <th:block th:each="a:${vendor}">
+                                            <option th:value="${a.VendorName}" th:text="${a.VendorName}"></option>
+                                        </th:block>
+                                    </select>
+                                </td>
+                                <td></td>
+                                <td><input type="date" name="s2"></td>
+                                <td><input type="file" accept="image/*" name="file"/></td>
+                                <td><textarea name="s6"></textarea></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="table table-bordered" id="contractTable">
+                            <thead>
+                            <tr>
+                                <th>품목코드</th>
+                                <th>품목명</th>
+                                <th>규격</th>
+                                <th>단가(원)</th>
+                                <th>L/T(일)</th>
+                                <th>품목추가</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><input type="text" placeholder="품목코드입력" name="s3"/></td>
+                                <td>자동생성</td>
+                                <td>자동생성</td>
+                                <td><input type="number" name="s4"/></td>
+                                <td><input type="number" name="s5"/></td>
+                                <td><button type="button" onclick="addRow()"><span class="text">추가</span></button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <button type="submit" style="float: right;">계약등록</button><br>
+                    </form>
+                </div>
+
+                <div id="tab2" class="cont">
+
+                    <form action="/tables1-2/Search" method="post">
+                        <label for="fromDate">시작 날짜:</label>
+                        <input type="date" id="fromDate" name="fromDate"required>
+
+                        <label for="toDate">종료 날짜:</label>
+                        <input type="date" id="toDate" name="toDate" required>
+
+                        <button type="submit" id="searchButton" class="btn btn-primary btn-icon-split">
+                            <span class="text">조회</span>
+                        </button>
+                    </form>
+
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>계약번호</th>
+                            <th>거래처</th>
+                            <th>사업자번호</th>
+                            <th>계약일</th>
+                            <th>품목명</th>
+                            <th>계약서</th>
+                            <th>삭제</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="contract:${contract}">
+                            <!--계약번호 -->
+                            <td th:text="${contract.contractCode}"></td>
+                            <!-- 거래처 -->
+                            <td th:text="${contract.vendorName}"></td>
+                            <!-- 사업자 번호 -->
+                            <td th:text="${contract.businessLicense}"></td>
+                            <!-- 계약일 -->
+                            <td th:text="${contract.contractdate}"></td>
+                            <!-- 품목명 -->
+                            <td th:text="${contract.itemname}"></td>
+                            <!-- 계약서 (이미지 다운로드) -->
+                            <td><a th:download="${contract.vendorName+'.'+contract.imageType}"
+                                   th:href="'data:' + ${contract.imageType} + ';base64,' + ${contract.contractScan}"
+                                   th:target="'_blank'">다운로드</a></td>
+                            <!-- 삭제 -->
+                            <td>
+                                <button><span class="text">삭제</span></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- cont_area 끝-->
+        </div><!-- tab_menu 끝 -->
+    </div><!-- DataTales Example 끝 -->
+
+    <script>
+        //탭으로 화면 나누기 위한 자바스크립트
+
+        let activeCont = ''; // 현재 활성화 된 컨텐츠 (기본: #tab1 활성화)
+
+        function changeTab(tabId) {
+            // 모든 탭버튼 클래스 제거
+            const buttons = document.querySelectorAll('.tab_menu .btn');
+            buttons.forEach(button => button.classList.remove('is_on'));
+
+            // 모든 컨텐츠 숨김
+            const contents = document.querySelectorAll('.tab_menu .cont_area .cont');
+            contents.forEach(content => content.style.display = 'none');
+
+            // 클릭한 탭버튼에 클래스 추가
+            const clickedButton = document.querySelector(`.tab_menu .btn[href="#${tabId}"]`);
+            clickedButton.classList.add('is_on');
+
+            // 클릭한 탭의 컨텐츠 표시
+            activeCont = `#${tabId}`;
+            document.querySelector(activeCont).style.display = 'block';
+        }
+
+        // 처음 로드될 때 계획 탭 활성화
+        changeTab('tab1');
+    </script>
+
+    <script>
+        // 팝업 열기 함수 정의
+        function openPopup(tabId) {
+            // 탭에 따라서 모달 창 선택
+            const modalId = (tabId === 'tab1') ? 'myModal1' : 'myModal2';
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        // 팝업 닫기 함수 정의
+        function closePopup() {
+            // 모든 모달 창을 숨김으로 설정
+            document.getElementById('myModal1').style.display = 'none';
+            document.getElementById('myModal2').style.display = 'none';
+        }
+
+        // 팝업 모달외부를 클릭했을 때 닫기
+        window.addEventListener('click', function(event) {
+            // 클릭한 요소가 모달 외부이면서 열린 모달이 있는 경우 닫기
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+    <script>
+        //진척검수입력 테이블에 칸추가
+        function addRow() {
+            // 테이블의 tbody 요소 찾기
+            var tbody = document.getElementById('contractTable').getElementsByTagName('tbody')[0];
+
+            // 새로운 행(tr) 요소 생성
+            var newRow = document.createElement('tr');
+
+            // 품목코드 열에 추가될 내용
+            var codeCell = document.createElement('td');
+            var codeInput = document.createElement('input');
+            codeInput.type = 'text';
+            codeInput.placeholder = '품목코드입력';
+            codeInput.name = 's3';
+            codeCell.appendChild(codeInput);
+            newRow.appendChild(codeCell);
+
+            // 품목명 열에 추가될 내용
+            var nameCell = document.createElement('td');
+            nameCell.textContent = '자동생성';
+            newRow.appendChild(nameCell);
+
+            // 규격 열에 추가될 내용
+            var specCell = document.createElement('td');
+            specCell.textContent = '자동생성';
+            newRow.appendChild(specCell);
+
+            // 단가(원) 열에 추가될 내용
+            var priceCell = document.createElement('td');
+            var priceInput = document.createElement('input');
+            priceInput.type = 'number';
+            priceInput.name = 's4';
+            priceCell.appendChild(priceInput);
+            newRow.appendChild(priceCell);
+
+            // L/T(일) 열에 추가될 내용
+            var ltCell = document.createElement('td');
+            var ltInput = document.createElement('input');
+            ltInput.type = 'number';
+            ltInput.name = 's5';
+            ltCell.appendChild(ltInput);
+            newRow.appendChild(ltCell);
+
+            // 새로운 행을 tbody에 추가
+            tbody.appendChild(newRow);
+        }
+    </script>
+
+
+    <!-- 계약등록 자바스크립트 -->
+    <script src="js/contract.js"></script>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
+</th:block>
+</body>
+</th:block>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<th:block th:replace="~{/basic::setContent(~{::content})}">
+<head>
+    <meta charset="utf-8">
+</head>
+<body id="page-top">
+<th:block th:fragment="content">
+    <title>현황관리 리포트(발주진행)</title>
+    <style>
+        #pChartdiv{
+            width:60%;
+            margin: 0 auto;
+        }
+    </style>
+    <style>
+        #scroll {
+            width: 100%;
+            height: 500px;
+            overflow-y: scroll;
+        }
+    </style>
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <!-- Page Heading 해당페이지 안내문구-->
+    <br><h1 class="h1 mb-0 text-gray-800"><center>현황관리 리포트(발주진행)</center></h1><br>
+
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div id="startEndDate" class="card-header py-3">
+            <table class="table table-bordered">
+                <tr>
+                    <th style="vertical-align: middle; text-align: center;">기간</th>
+                    <th style="vertical-align: middle;">시작일자 : <input type="date" id="startDate"> ~
+                        종료일자 : <input type="date" id="endDate">
+                        <button class="btn btn-primary btn-icon-split" onclick="openList()">
+                            <span class="text">조회</span></button></th>
+
+
+                </tr>
+            </table>
+
+        </div>
+        <div id="popup" class="popup" style="display: none;">
+            <div class="card-body">
+                <div id="scroll" class="table-responsive">
+                    <h5 class="m-0 font-weight-bold text-primary" >자재품목리스트</h5><br>
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+
+                        <thead>
+                        <tr>
+                            <th>발주서번호</th>
+                            <th>발주상태</th>
+                            <th>발주서 발행</th>
+                            <th>진척검수</th>
+                            <th>발주마감</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+                            <td>P11004</td>
+                            <td>발주예정</td>
+                            <td>미발행</td>
+                            <td>미검수</td>
+                            <td>미마감</td>
+                        </tr>
+                        <tr>
+                            <td>P11005</td>
+                            <td>발주완료</td>
+                            <td>발행</td>
+                            <td>검수중</td>
+                            <td>미마감</td>
+                        </tr>
+                        <tr>
+                            <td>P11006</td>
+                            <td>발주완료</td>
+                            <td>발행</td>
+                            <td>검수완료</td>
+                            <td>마감</td>
+                        </tr>
+
+
+
+                        </tbody>
+                    </table>
+                </div> <!--테이블 리스폰시브 끝-->
+                <div id="pChartdiv">
+                    <canvas id="pChart" width="100" height="50"></canvas>
+                </div>
+
+
+            </div><!--카드 바디 끝-->
+        </div><!--팝업 끝-->
+    </div><!--DataTales Example 끝 -->
+
+
+
+    <script>
+        // 팝업 열기
+        function openList() {
+            document.getElementById('popup').style.display = 'block';
+        }
+
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        var ctx = document.getElementById('pChart').getContext('2d');
+
+    var totalP=10;
+
+    var complete = [7,5,3,3,1];
+    var completeNot = [3,5,7,7,9];
+
+    var completeD =[];
+    var completeNotD=[];
+
+
+
+    for(var i=0; i<complete.length; i++) {
+        completeD.push((complete[i]/totalP)*100);
+        completeNotD.push((completeNot[i]/totalP)*100);
+    }
+
+
+
+    var data = {
+        labels: ['발주서발행', '진척검수', '입고마감', '명세서발행', '발주마감'],
+        datasets: [
+            {
+                label: '완료',
+                backgroundColor: 'rgba(58, 41, 214, 0.8)',
+                borderColor: 'rgba(0, 0, 0, 1)',
+                data: completeD,
+            },
+            {
+                label: '미완료',
+                backgroundColor: 'rgba(211, 44, 211, 0.8)',
+                borderColor: 'rgba(255, 255, 255, 1)',
+                data: completeNotD,
+            },
+
+            ],
+        };
+
+        var pChart = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: {
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true,
+                    beginAtZero: true,
+                    max: 100,
+                    ticks:{
+                        callback: function (value) {
+                    return value + '%';
+                        },
+                    },
+
+                },
+            },
+            plugins: {
+                tooltip: {
+                    enabled: false,
+                },
+                datalabels: {
+                    color: 'white',
+                    formatter: function (value, context) {
+                        return value + '%';
+                    },
+                },
+            },
+        },
+        plugins: [ChartDataLabels],
+    });
+});
+
+    </script>
+
+
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
+ </th:block>
+</body>
+</th:block>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<th:block th:replace="~{/basic::setContent(~{::content})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block th:fragment="content">
+
+    <th:block th:text="${purchaseCode}"></th:block>
+<div class="modal-content">
+    <div class="card-body">
+        <div class="table-responsive">
+            <h5 class="m-0 font-weight-bold text-primary" >진척검수 일정입력</h5><br>
+            <table style="width: 90%;" class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>발주서번호</th>
+                    <th>품목코드</th>
+                    <th>품목명</th>
+                    <th>규격</th>
+                    <th>입고수량(EA)</th>
+                    <th>입고예정일</th>
+                    <th>거래처</th>
+                    <th>담당자메일</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>P11005</td>
+                    <td>CB001</td>
+                    <td>브라켓1호</td>
+                    <td>3*5*1</td>
+                    <td>150</td>
+                    <td>2024-01-15</td>
+                    <td>(주) 제이아이테크</td>
+                    <td>a1234@gmail.com</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>CB002</td>
+                    <td>메인보드2호</td>
+                    <td>3*5*2</td>
+                    <td>200</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+            <form action="adcess" method="post">
+                <table style="width: 50%;" class="table table-bordered" width="100%" cellspacing="0" id="progressInspectionTable">
+                    <thead>
+                    <tr>
+                        <th>차수</th>
+                        <th>일자</th>
+                        <th>처리</th>
+                        <th>일정추가</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1차</td>
+                        <td><input type="date" name="a1"></td>
+                        <td><button class="btn btn-primary btn-icon-split">
+                            <span class="text">저장</span></button></td>
+                        <td><button class="btn btn-primary btn-icon-split" onclick="addRow()">
+                            <span class="text">검수칸추가</span></button></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <input type="submit" value="ddddddd">
+            </form>
+        </div> <!--테이블 리스폰시브-->
+    </div><!-- 카드 바디 끝 -->
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+<script>
+    //진척검수입력 테이블에 칸추가
+    function addRow() {
+    // 테이블의 tbody 요소 찾기
+    var tbody = document.getElementById('progressInspectionTable').getElementsByTagName('tbody')[0];
+
+    // 새로운 행(tr) 요소 생성
+    var newRow = document.createElement('tr');
+
+    // 차수 열에 추가될 내용
+    var orderCell = document.createElement('td');
+    orderCell.innerText = tbody.children.length + 1 + '차'; // 현재 행의 순서 + 1
+    newRow.appendChild(orderCell);
+
+    // 일자 열에 추가될 내용
+    var dateCell = document.createElement('td');
+    var dateInput = document.createElement('input');
+    dateInput.type = 'date';
+    dateInput.name = 'a1';
+    dateCell.appendChild(dateInput);
+    newRow.appendChild(dateCell);
+
+    // 저장 버튼 열에 추가될 내용
+    var saveCell = document.createElement('td');
+    var saveButton = document.createElement('button');
+    saveButton.className = 'btn btn-primary btn-icon-split';
+    saveButton.innerHTML = '<span class="text">저장</span>';
+    saveButton.addEventListener('click', function(event) {
+        event.stopPropagation(); // 이벤트 전파 막기
+    });
+    saveCell.appendChild(saveButton);
+    newRow.appendChild(saveCell);
+
+    // 새로운 행을 tbody에 추가
+    tbody.appendChild(newRow);
+
+    // 폼 제출 막기
+    event.preventDefault();
+    }
+</script>
+
+</th:block>
+</body>
+</th:block>
+</html>

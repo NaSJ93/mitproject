@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<th:block th:replace="~{/basic::setContent(~{::content})}">
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body id="page-top">
+<th:block th:fragment="content">
+    <title>품목정보등록1-1</title>
+    <!-- Custom styles for this page -->
+    <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <!-- 자재품목리스트 css-->
+
+    <!--테이블 -->
+    <link href="css/item_Info.css" rel="stylesheet">
+    <!-- 모달 css -->
+    <link  href="css/modal.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Page Heading 해당페이지 안내문구-->
+    <br><h1 class="h1 mb-0 text-gray-800"><center>품목정보등록</center></h1><br>
+
+    <!--등록-->
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <h4 class="m-0 font-weight-bold text-primary" ><center>자재 품목리스트</center></h4><br>
+                <span>제품명: 갤럭시(G1)</span>
+                <!-- 품목등록버튼 -->
+                <form action="abc" method="post" enctype="multipart/form-data">
+                <button type="submit" id="btn_Item_Info_Confirm" class="btn btn-primary btn-icon-split"> <span class="text">품목 등록</span></button>
+                <span id="itemTable">
+                <table class="table table-bordered" id="table_Item_Info" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>품목코드</th>
+                        <th>품목명</th>
+                        <th>대</th>
+                        <th>중</th>
+                        <th>규격</th>
+                        <th>재질</th>
+                        <th>개수(EA)</th>
+                        <th>도면번호</th>
+                        <th>도면이미지</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table_Body">
+                    <tr>
+                        <td class="item_Code"><input id="test" type="text" placeholder="(자동입력)" name="s1"></td>
+                        <td><input type="text" id="item_Name" placeholder="품목명 입력" name="s2"></td>
+                        <td >
+                            <select class="Large" name="s3" id="largeSelect">
+                                <option value="0" >대분류 선택</option>
+                                <th:block th:each="b:${x}">
+                                    <option th:value="${b.ItemCodeLarge}" th:text="${b.ItemCodeLarge}"></option>
+                                </th:block>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="Medium" name="s4" id="mediumSelect">
+                                <option value="0">중분류 선택</option>
+                                <th:block th:each="b:${z}">
+                                    <option th:value="${b.ItemCodeMedium}" th:text="${b.ItemCodeMedium}"></option>
+                                </th:block>
+                            </select>
+                        </td>
+                        <td><input type="text" id="standard" placeholder="규격 입력" name="s5"></td>
+                        <td><input type="text" id="texture"placeholder="재질" name="s6"></td>
+                        <td><input type="number" id="item_Count" placeholder="개수" name="s7"></td>
+                        <td><input type="text" id="drawing_Number" placeholder="도면번호 입력" name="s8"></td>
+                        <td><input type="file" name="file" accept="image/*" ></td>
+                    </tr>
+            </tbody>
+            </table>
+                </span>
+                </form>
+
+
+            <!--조회-->
+            <div class="card shadow mb-4">
+                <p>조회</p>
+                <div class="card-body">
+                    <table class="table table-bordered"  width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>품목코드</th>
+                            <th>품목명</th>
+                            <th>대</th>
+                            <th>중</th>
+                            <th>규격</th>
+                            <th>재질</th>
+                            <th>개수(EA)</th>
+                            <th>도면번호</th>
+                            <th>도면이미지</th>
+                            <th>거래처</th>
+                        </tr>
+                        </thead>
+                        <tbody class="table_Body">
+                        <tr th:each="a:${s}">
+                            <td th:text="${a.itemCode}"></td>
+                            <td th:text="${a.itemName}"></td>
+                            <td th:text="${a.medium.large.ItemCodeLarge}"></td>
+                            <td th:text="${a.medium.ItemCodeMedium}"></td>
+                            <td th:text="${a.standard}"></td>
+                            <td th:text="${a.texture}"></td>
+                            <td th:text="${a.itemCount}"></td>
+                            <td th:text="${a.drawingNumber}"></td>
+                            <td><a th:download="${a.drawingNumber +'.'+a.imageType}" th:href="'data:' + ${a.imageType} + ';base64,' + ${a.drawingImage}" th:target="'_blank'">다운로드</a></td>
+                            <td th:if="${a.contract}"><a th:download="${'계약'+'.'+a.contract.imageType}" th:href="'data:' + ${a.contract.imageType} + ';base64,' + ${a.contract.ContractScan}" th:target="'_blank'"><th:block th:text="${a.contract.vendor.VendorName}"></th:block></a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div><!--테이블 바로 아래 부분-->
+        </div>
+
+            <form action="aaa" method="post">
+                시작<input type="date" name="s01">
+                종료<input type="date" name="s02">
+                <input type="submit" value="dddd">
+            </form>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                $(document).ready(function() {
+                    // Large 셀렉트 박스의 변경 이벤트 핸들러
+                    $('#largeSelect').change(function() {
+                        var selectedLarge = $(this).val();
+
+                        // 선택된 Large 값을 서버로 전송
+                        $.ajax({
+                            type: 'GET',
+                            url: '/getMediumByLarge',  // 실제로 사용할 URL로 변경
+                            data: {largeCode: selectedLarge},
+                            success: function(data) {
+                                // 서버로부터 받은 Medium 값을 Medium 셀렉트 박스에 추가
+                                var mediumSelect = $('#mediumSelect');
+                                mediumSelect.empty();
+                                mediumSelect.append('<option value="0">중분류 선택</option>');
+
+                                for (var i = 0; i < data.length; i++) {
+                                    mediumSelect.append('<option value="' + data[i].ITEM_CODE_MEDIUM + '">' + data[i].ITEM_CODE_MEDIUM + '</option>');
+                                }
+                            },
+                            error: function(error) {
+                                console.log('Error:', error);
+                            }
+                        });
+                    });
+                });
+            </script>
+
+
+
+
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
+
+</th:block>
+</body>
+</th:block>
+</html>

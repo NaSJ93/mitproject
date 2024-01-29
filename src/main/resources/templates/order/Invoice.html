@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="print">
+    <table cellpadding="5px" border="-1">
+        <colgroup>
+            <col width="8%">
+            <col width="14%">
+            <col width="14%">
+            <col width="14%">
+            <col width="14%">
+            <col width="14%">
+            <col width="14%">
+        </colgroup>
+        <tr>
+            <td align="center" COLSPAN="7" ROWSPAN="2" class="bb" style="color:#000000"><div style=font-size:14pt><strong>거래명세서</strong></div></td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td align="left"  class="bc" style="color:#000000" colspan="2">사업자등록번호</td>
+            <td align="left"  class="bc" style="color:#000000" colspan="2">123-45-67890</td>
+            <td align="center" COLSPAN="3" ROWSPAN="1" class="bb" style="color:#000000" th:text="${#dates.format(date,'yyyy년 MM월 dd일')}">2024년 01월 15일</td>
+        </tr>
+        <tr>
+            <td align="left"  class="bc" style="color:#000000">상호</td>
+            <td align="left"  class="bb" style="color:#000000">㈜신.생.아</td>
+            <td align="left"  class="bb" style="color:#000000">성명</td>
+            <td align="left"  class="bc" style="color:#000000">나승정</td>
+            <td align="center" COLSPAN="3" ROWSPAN="1" class="bb" style="color:#000000">(주) 제이아이테크 귀하</td>
+        </tr>
+        <tr>
+            <td align="left"  class="bc" style="color:#000000">연락처</td>
+            <td align="left"  class="bc" style="color:#000000">010-1111-2222</td>
+            <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+            <td align="right"  class="bc" style="color:#000000">&nbsp;</td>
+            <td align="center" COLSPAN="3" ROWSPAN="1" class="bb" style="color:#000000">아래와 같이 계산합니다.</td>
+        </tr>
+        <tr>
+            <td align="center" COLSPAN="7" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+        </tr>
+        <tr>
+            <td align="left"  class="bc" style="color:#000000">품목코드</td>
+            <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">품목명</td>
+            <td align="left"  class="bc" style="color:#000000">수량</td>
+            <td align="left"  class="bc" style="color:#000000">단가</td>
+            <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">금액</td>
+        </tr>
+        <tr th:each="a:${itemList}">
+            <td align="right"  class="bc" style="color:#000000" th:text="${a.itemCode}">브라켓1호</td>
+            <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000" th:text="${a.itemName}">CB001</td>
+            <td align="right"  class="bc" style="color:#000000" th:text="${a.itemCount}">150</td>
+            <td align="right"  class="bc" style="color:#000000" th:text="${a.price}">4,000</td>
+            <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000" th:text="${a.itemCount*a.price}">600,000</td>
+
+        </tr>
+        <tr>
+            <td align="center" COLSPAN="3" ROWSPAN="1" class="bb" style="color:#000000">계</td>
+            <td align="right"  class="bb" style="color:#000000" ></td>
+            <td align="right"  class="bb" style="color:#000000" ></td>
+            <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000" th:text="${count}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

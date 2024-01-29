@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" >
+<th:block th:replace="~{/basic::setContent(~{::content})}">
+<head>
+    <meta charset="utf-8">
+</head>
+<body id="page-top">
+<th:block th:fragment="content">
+    <title>신생아 구매조달포털</title>
+    <!-- Page Heading 해당페이지 안내문구-->
+    <br><h3 class="h3 mb-0 text-gray-800">구매조달포털</h3><br>
+
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <!-- 조달관리 Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-lg font-weight-bold text-success text-uppercase mb-1">조달관리</div>
+                            <h6 class="h6 mb-0 text-gray-800">품목정보등록<br>계약등록<br>조달계획등록</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 발주관리 Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-lg font-weight-bold text-success text-uppercase mb-1">발주관리</div>
+                            <h6 class="h6 mb-0 text-gray-800">구매발주서발행<br>진척검수처리<br>현황관리리포트(발주진행)</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 자재관리 Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-lg font-weight-bold text-success text-uppercase mb-1">자재관리</div>
+                            <h6 class="h6 mb-0 text-gray-800">자재입고/거래명세서발행/발주마감<br>자재출고<br>현황관리리포트(재고금액)</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+</th:block>
+</body>
+</th:block>
+</html>

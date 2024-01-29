@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<th:block th:replace="~{/basic::setContent(~{::content})}">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body id="page-top">
+    <th:block th:fragment="content">
+        <title>자재관리3-2</title>
+
+        <link  href="/css/modal.css" rel="stylesheet" type="text/css">
+        <!-- Custom styles for this page -->
+        <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+        <!-- Page Heading 해당페이지 안내문구-->
+        <br><h1 class="h1 mb-0 text-gray-800"><center>거래명세서발행</center></h1><br>
+
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+
+            <div class="card-body">
+
+
+                <br>
+                <h4 class="m-0 font-weight-bold text-primary" >거래명세서 발행</h4><br>
+                <form action="/invochoice" method="post">
+                    <select name="sel" >
+                        <th:block th:each="s:${choice}">
+                            <option th:value="${s}" th:text="${s}"></option>
+                        </th:block>
+                    </select>
+                    <input type="submit" value="선택">
+                </form>
+                <!-- 발주마감 테이블 시작 -->
+                <table class="table table-bordered">
+                    <thead>
+                    <tr >
+                        <th >발주번호</th>
+                        <th>품목코드</th>
+                        <th>품목명</th>
+                        <th>규격</th>
+                        <th>단가(원)</th>
+                        <th>수량(EA)</th>
+                        <th>총금액(원)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="a:${list}">
+                        <td th:text="${a.purchaseCode}">P11005</td>
+                        <td th:text="${a.itemCode}">CB001</td>
+                        <td th:text="${a.itemName}">브라켓1호</td>
+                        <td th:text="${a.texture}">3*5*1</td>
+                        <td th:text="${a.price}">4,000</td>
+                        <td th:text="${a.InboundQuantity}">150</td>
+                        <td th:text="${a.price * a.InboundQuantity}">600,000</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <!-- 발주마감 테이블 끝 -->
+                <button class="btn btn-primary btn-icon-split" id="printbtn" ><span class="text">인쇄</span></button>
+                <button class="btn btn-primary btn-icon-split" type="submit" id="btn_open_modal"><span class="text">발행</span></button>
+            </div>
+        </div>
+
+        <!-- 모달 시작 -->
+        <div class="modal">
+            <div class="modal_body">
+                <!-- //모달의 바디 (시작) -->
+
+                <h2>메일 발송. </h2>
+
+                <form id="mailForm" method="post">  <!--enctype="multipart/form-data"-->
+                    <!--거래처 메일<input type="text" id="email" value="ddd"><br>
+                    담당자 메일<input type="text" id="managerEmail"><br>
+                    비밀번호<input type="password" id="password"><br>
+                    첨부파일<input type="file" accept=".pdf" id="attachment" ><br>-->
+                    <input type="hidden" th:value="${code}" id="code" >
+                    <input type="hidden" value="invoice" id="type" >
+                    <button class="btn_confirm">발송</button>
+                    <button type="button" class="btn_close_modal">닫기</button>
+                </form>
+            </div>
+            <!-- //모달의 바디(끝) -->
+        </div>
+        <!-- 모달 끝 -->
+        <!--모달-->
+        <script src="/js/ModalJava2.js"></script>
+
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+        <script th:inline="javascript">
+            console.log("1");
+            $(document).ready(function() {
+            console.log("2");
+                $("#printbtn").on('click', function() {
+                    let code=[[${code}]];
+                    let popOption = "width=1000,height=700,top=300,left=300,scrollbars=yes";
+                    let popUrl = '/order/Invoice?purchaseCode='+code;
+                    let newWindow = window.open(popUrl, 'pop', popOption);
+                    if (newWindow) {
+                        newWindow.onload = function() {
+                            newWindow.print();
+                        };
+                    } else {
+                        alert("팝업이 차단되었습니다. 팝업 차단을 해제하고 다시 시도해주세요.");
+                    }
+                });
+            });
+        </script>
+
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
+
+        <!-- Page level plugins -->
+        <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+        <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+        <!-- Page level custom scripts -->
+        <script src="js/demo/datatables-demo.js"></script>
+
+    </th:block>
+    </body>
+</th:block>
+</html>

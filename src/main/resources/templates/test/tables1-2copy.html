@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<th:block th:replace="~{/basic::setContent(~{::content})}">
+<head>
+    <meta charset="utf-8">
+</head>
+<body id="page-top">
+<th:block th:fragment="content">
+    <title>품목정보등록1-2</title>
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="css/modal.css" rel="stylesheet">
+    <link href="css/contract.css" rel="stylesheet">
+
+                    <!-- Page Heading 해당페이지 안내문구-->                    
+                    <br><h1 class="h1 mb-0 text-gray-800"><center>계약등록</center></h1><br>
+
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="table-container">
+            <div class="card-body">
+                <div class="Text_Color">계약등록</div>
+                <form action="abcd" method="post" enctype="multipart/form-data">
+                <!-- 계약서 등록버튼 -->
+                <button type="submit" class="btn btn-primary btn-icon-split">
+                                        <span class="text">
+                                            등록
+                                        </span>
+                </button>
+
+                <!-- 계약정보 테이블 시작-->
+                <table class="table-bordered">
+                    <!--테이블 내용-->
+                    <thead>
+                    <!-- 계약서등록 1번 줄 -->
+                    <tr>
+                        <th>거래처</th>
+                        <td>
+                            <select id="vendorDropdown" class="vender_Name"
+                                    onchange="RegisterNumber()" name="s1">
+                                <th:block th:each="a:${vendor}">
+                                    <option th:value="${a.VendorName}" th:text="${a.VendorName}"></option>
+                                </th:block>
+                            </select>
+                        </td>
+                        <th>계약서</th>
+                        <td colspan="3" id="contractFileInput">
+                        <input type="file" accept="image/*" name="file">
+                        </td>
+                    </tr>
+                    <!-- 계약서등록 2번 줄 -->
+                    <tr>
+                        <th>계약일</th>
+                        <td><input type="date"  class="text_Area"
+                                   placeholder="직접입력" name="s2">
+                        </td>
+                        <th>사업자 등록번호</th>
+                        <td>
+                            <div class="text_Area" placeholder="자동생성">자동기입</div>
+                        </td>
+                        <th>계약번호</th>
+                        <td>
+                            <input type="text" name="contractCode">
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>품목코드</th>
+                        <th>품목명</th>
+                        <th>규 격</th>
+                        <th>단 가(원)</th>
+                        <th colspan="2">L/T(일)</th>
+                    </tr>
+                    <tr>
+                        <td><input class="text_Area" type="text" placeholder="품목코드 입력" name="s3">
+                        </td>
+                        <td>
+                            <div class="text_Area" placeholder="자동생성">자동생성</div>
+                        </td>
+                        <td>
+                            <div class="text_Area" placeholder="자동생성">자동생성</div>
+                        </td>
+                        <td><input class="text_Area" type="number" placeholder="단가 입력" name="s4">
+                        </td>
+                        <td colspan="2"><input class="text_Area" type="number"
+                                               placeholder="직접입력" name="s5">
+                        </td>
+                    </tr>
+
+
+                    </tbody>
+                </table>
+                <!-- 특이사항 (시작) -->
+                <span>
+                                        <br>
+                                        <h3>특이 사항</h3>
+                                        <textarea class="significant" name="s6"></textarea>
+                                    </span>
+                <!-- 특이사항 (끝) -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="contract_Container">
+
+        <div class="card shadow mb-4">
+            <div class="table-container">
+                <!-- 계약서 리스트 출력 시작 -->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <br>
+                        <div class="Text_Color">계약서 조회</div>
+
+
+                        <!-- 계약서 등록버튼 -->
+                        <button id="" class="btn btn-primary btn-icon-split">
+                                                <span class="text">
+                                                    조회
+                                                </span>
+                        </button>
+                        <br>
+
+                        <!-- 계약서 조회 테이블 시작  -->
+                        <table class="table-bordered">
+                            <thead>
+
+                            <!-- 계약서등록 1번 줄 -->
+                            <tr>
+                                <th>거래처</th>
+                                <td>
+                                    <input type="text" id="" class="text_Area"
+                                           placeholder="직접입력">
+                                </td>
+
+                                <th>계약일</th>
+                                <td><input type="date" id="contract_Date" class="text_Area"
+                                           placeholder="직접입력"></td>
+
+
+                            </tr>
+
+                            </thead>
+                            <!-- 계약서 목록 조회 Tbody-->
+                            <tbody class="">
+
+                            </tbody>
+                        </table>
+                        <br>
+
+                        <table class="table-bordered">
+                            <thead>
+                            <tr>
+                                <th>계약번호</th>
+                                <th>거래처</th>
+                                <th>계약일</th>
+                                <th>사업자 등록번호</th>
+                                <th>품목명</th>
+                                <th>계약서</th>
+                                <th>수정/삭제</th>
+                            </tr>
+                            <tr>
+                                <td><input type="text" readonly></td>
+                                <td><input type="text" readonly></td>
+                                <td><input type="text" readonly></td>
+                                <td><input type="number" readonly></td>
+                                <td><input type="text" readonly></td>
+                                <td><input type="text" readonly></td>
+                                <td>
+                                    <button id="" class="btn btn-primary btn-icon-split">
+                                                                <span class="text">
+                                                                    수정
+                                                                </span>
+                                    </button>
+                                    <button id="" class="btn btn-primary btn-icon-split">
+                                                                <span class="text">
+                                                                    삭제
+                                                                </span>
+                                    </button>
+
+                            </tr>
+
+
+
+                            </thead>
+
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <!-- 계약서 조회 테이블 끝 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- End of Main Content -->
+
+
+
+    <!-- 계약등록 자바스크립트 -->
+    <script src="js/contract.js"></script>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
+</th:block>
+</body>
+</th:block>
+</html>

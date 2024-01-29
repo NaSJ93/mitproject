@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" >
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body id="page-top">
+        <title>발주서 인쇄</title>
+        <!-- Page Heading 해당페이지 안내문구-->
+        <div id="print">
+            <table cellpadding="5px" border="-1">
+                <colgroup>
+                    <col width="9.8%">
+                    <col width="14%">
+                    <col width="14%">
+                    <col width="14%">
+                    <col width="14%">
+                    <col width="14%">
+                    <col width="14%">
+                </colgroup>
+                <tr>
+                    <td align="center" COLSPAN="7" ROWSPAN="2" class="bb" style="color:#000000"><div style=font-size:14pt><strong>발 주 서</strong></div></td>
+                </tr>
+                <tr>
+                </tr>
+                <tr>
+                    <td align="center" COLSPAN="2" ROWSPAN="3" class="bb" style="color:#000000">발주처</td>
+                    <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">사업자등록번호</td>
+                    <td align="center" COLSPAN="3" ROWSPAN="1" class="bb" style="color:#000000">123-45-67890</td>
+                </tr>
+                <tr>
+                    <td align="left"  class="bb" style="color:#000000">상호</td>
+                    <td align="left"  class="bb" style="color:#000000">㈜신.생.아</td>
+                    <td align="left"  class="bb" style="color:#000000">성명</td>
+                    <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">나승정</td>
+                </tr>
+                <tr>
+                    <td align="left"  class="bc" style="color:#000000">연락처</td>
+                    <td align="center" COLSPAN="4" ROWSPAN="1" class="bb" style="color:#000000">010-1111-2222</td>
+                </tr>
+                <tr>
+                    <td align="center" COLSPAN="7" ROWSPAN="1" class="bb" style="color:#000000">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="center"  class="bc" style="color:#000000">품목명</td>
+                    <td align="center"  class="bc" style="color:#000000">수량</td>
+                    <td align="center"  class="bc" style="color:#000000">단가</td>
+                    <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">납기일</td>
+                    <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000">비고</td>
+                </tr>
+                <tr th:each="a:${pur}">
+                    <td align="right"  class="bc" style="color:#000000" th:text="${a.itemName}">메인보드1호</td> <!--.itemName-->
+                    <td align="right"  class="bc" style="color:#000000" th:text="${a.itemCount}">10</td>
+                    <td align="right"  class="bc" style="color:#000000" th:text="${a.Price}">60,000</td>
+                    <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000" th:text="${#dates.format(a.ProcurementDate,'yyyy-MM-HH')}">2024-01-15</td>
+                    <td align="center" COLSPAN="2" ROWSPAN="1" class="bb" style="color:#000000" >&nbsp;</td>
+                </tr>
+
+                <tr>
+                    <td align="left" COLSPAN="7" ROWSPAN="2" class="bd" style="color:#000000"> <th:block th:each="a, i: ${list}" th:if="${i.index == 0}" th:text="${a.id.itemInfo.contract.vendor.VendorName}"></th:block>
+                        귀하<br />발주일자 : <th:block th:each="a:${date}" th:text="${a}"></th:block> </td>
+                </tr>
+                <tr>
+
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<th:block th:replace="~{/basic::setContent(~{::content})}">
+<head>
+</head>
+
+<body id="page-top">
+<th:block th:fragment="content">
+    <title>품목정보등록1-1</title>
+
+    <style>
+        .tab_menu { position: relative; }
+        .tab_menu .btn { font-size: 14px; cursor: pointer; margin-right: 0px; padding: 20px; border: 2px solid #ddd; }
+        .tab_menu .btn.is_on { font-size: 14px; font-weight: bold; color: #4e73df; background-color: white; border-bottom: 1px solid #ddd; }
+        .cont_area { margin-top: 0px; }
+        .cont { display: none; color: #fff; text-align: center; width: 100%; height: 100%; border: 2px solid #ddd; padding: 30px; }
+
+
+        /* 인풋박스 스타일 */
+        input {
+            width:90px;
+            height:30px;
+            font-size:16px;
+        }
+    </style>
+
+    <!-- Custom styles for this page -->
+    <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <!-- 자재품목리스트 css-->
+
+    <!--테이블 -->
+    <link href="css/item_Info.css" rel="stylesheet">
+    <!-- 모달 css -->
+    <link  href="css/modal.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Page Heading 해당페이지 안내문구-->
+    <br><h1 class="h1 mb-0 text-gray-800"><center>품목정보등록</center></h1><br>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+
+
+        <div class="tab_menu">
+            <a href="#tab1" class="btn is_on" onclick="changeTab('tab1')">품목정보등록</a>
+            <a href="#tab2" class="btn" onclick="changeTab('tab2')">품목정보조회</a>
+
+
+            <div class="cont_area">
+                <div id="tab1" class="cont">
+                    <form action="/regiitem" method="post" enctype="multipart/form-data">
+                    <span id="itemTable">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>품목코드</th>
+                            <th>품목명</th>
+                            <th>대</th>
+                            <th>중</th>
+                            <th>규격</th>
+                            <th>재질</th>
+                            <th>개수(EA)</th>
+                            <th>도면번호</th>
+                            <th>도면이미지</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+
+                        <tbody class="table_Body">
+                        <tr>
+                            <td class="item_Code"><input id="test" type="text" placeholder="자동생성" name="s1"></td>
+                            <td><input id="item_Name" type="text" placeholder="품목입력" name="s2"/></td>
+                            <td><select class="Large" name="s3" id="largeSelect" onchange="filterSubCategory()">
+                                <option value="0">대분류 선택</option>
+                                <option value="반도체(B)">반도체(B)</option>
+                                <option value="연결부품(C)">연결부품(C)</option>
+                                <option value="액정(G)">액정(G)</option>
+                            </select>
+                            </td>
+                            <td><select class="Medium" name="s4" id="mediumSelect">
+                                <option value="0">중분류 선택</option>
+                                <option value="메인보드(A)">메인보드(A)</option>
+                                <option value="메모리카드(S)">메모리카드(S)</option>
+                                <option value="브라켓(B)">브라켓(B)</option>
+                                <option value="나사(M)">나사(M)</option>
+                                <option value="플랫(F)">플랫(F)</option>
+                            </select>
+                            </td>
+                            <td><input type="text" id="standard" placeholder="규격입력" name="s5"/></td>
+                            <td><input type="text" id="texture"placeholder="재질입력" name="s6"/></td>
+                            <td><input type="number" id="item_Count" placeholder="개수입력" name="s7"/></td>
+                            <td><input type="text" id="drawing_Number" placeholder="번호입력" name="s8"/></td>
+                            <td><input type="file" id="drawing_File" accept="image/*" name="s9"></td>
+                            <td><button type="submit" id="btn_Item_Info_Confirm"><span class="text">저장</span></button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    </span>
+                    </form>
+                </div>
+
+                <div id="tab2" class="cont">
+                    <!--품목등록 조회탭의 조회 기능-->
+                    <form action="/tables1-1/Search" method="post">
+                        <button type="submit" id="searchButton" class="btn btn-primary btn-icon-split">
+                            <span class="text">조회</span>
+                        </button>
+                    </form>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>품목코드</th>
+                            <th>품목명</th>
+                            <th>대</th>
+                            <th>중</th>
+                            <th>규격</th>
+                            <th>재질</th>
+                            <th>개수(EA)</th>
+                            <th>도면번호</th>
+                            <th>도면이미지</th>
+                            <th>거래처</th>
+                        </tr>
+                        </thead>
+                        <tbody class="table_Body">
+                        <tr th:each="a:${s}">
+                            <td th:text="${a.itemCode}"></td>
+                            <td th:text="${a.itemName}"></td>
+                            <td th:text="${a.medium.large.itemCodeLarge}"></td>
+                            <td th:text="${a.medium.itemCodeMedium}"></td>
+                            <td th:text="${a.standard}"></td>
+                            <td th:text="${a.texture}"></td>
+                            <td th:text="${a.itemCount}"></td>
+                            <td th:text="${a.drawingNumber}"></td>
+                            <td><a th:download="${a.drawingNumber +'.'+a.imageType}" th:href="'data:' + ${a.imageType} + ';base64,' + ${a.drawingImage}" th:target="'_blank'">다운로드</a></td>
+                            <td th:if="${a.contract}"><a th:download="${'계약'+'.'+a.contract.imageType}" th:href="'data:' + ${a.contract.imageType} + ';base64,' + ${a.contract.ContractScan}" th:target="'_blank'"><th:block th:text="${a.contract.vendor.VendorName}"></th:block></a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- cont_area 끝-->
+        </div><!-- tab_menu 끝 -->
+    </div><!-- DataTales Example 끝 -->
+
+
+    <script>
+        //탭으로 화면 나누기 위한 자바스크립트
+
+        let activeCont = ''; // 현재 활성화 된 컨텐츠 (기본: #tab1 활성화)
+
+        function changeTab(tabId) {
+            // 모든 탭버튼 클래스 제거
+            const buttons = document.querySelectorAll('.tab_menu .btn');
+            buttons.forEach(button => button.classList.remove('is_on'));
+
+            // 모든 컨텐츠 숨김
+            const contents = document.querySelectorAll('.tab_menu .cont_area .cont');
+            contents.forEach(content => content.style.display = 'none');
+
+            // 클릭한 탭버튼에 클래스 추가
+            const clickedButton = document.querySelector(`.tab_menu .btn[href="#${tabId}"]`);
+            clickedButton.classList.add('is_on');
+
+            // 클릭한 탭의 컨텐츠 표시
+            activeCont = `#${tabId}`;
+            document.querySelector(activeCont).style.display = 'block';
+        }
+
+        // 처음 로드될 때 계획 탭 활성화
+        changeTab('tab1');
+    </script>
+
+    <script>
+        // 팝업 열기 함수 정의
+        function openPopup(tabId) {
+            // 탭에 따라서 모달 창 선택
+            const modalId = (tabId === 'tab1') ? 'myModal1' : 'myModal2';
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        // 팝업 닫기 함수 정의
+        function closePopup() {
+            // 모든 모달 창을 숨김으로 설정
+            document.getElementById('myModal1').style.display = 'none';
+            document.getElementById('myModal2').style.display = 'none';
+        }
+
+        // 팝업 모달외부를 클릭했을 때 닫기
+        window.addEventListener('click', function(event) {
+            // 클릭한 요소가 모달 외부이면서 열린 모달이 있는 경우 닫기
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+    <script>
+        function filterSubCategory() {
+        var largeSelect = document.getElementById("largeSelect").value;
+        var subCategoryDropdown = document.getElementById("mediumSelect");
+
+        // 중분류 드롭다운 초기화
+        subCategoryDropdown.innerHTML = '<option value="0">중분류 선택</option>';
+
+        // 대분류 선택 시 중분류 범위설정
+        switch (largeSelect) {
+            case "반도체(B)": // 반도체
+            addOption(subCategoryDropdown, "메인보드(A)", "메인보드(A)");
+            addOption(subCategoryDropdown, "메모리카드(S)", "메모리카드(S)");
+            break;
+            case "연결부품(C)": // 연결부품
+            addOption(subCategoryDropdown, "브라켓(B)", "브라켓(B)");
+            addOption(subCategoryDropdown, "나사(M)", "나사(M)");
+            break;
+            case "액정(G)": // 액정
+            addOption(subCategoryDropdown, "플랫(F)", "플랫(F)");
+            break;
+        }
+        }
+
+        function addOption(selectElement, value, text) {
+        var option = document.createElement("option");
+        option.value = value;
+        option.text = text;
+        selectElement.add(option);
+        }
+    </script>
+    <!--테이블 기능구현-->
+    <script src="js/item_Info.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
+
+</th:block>
+</body>
+</th:block>
+</html>

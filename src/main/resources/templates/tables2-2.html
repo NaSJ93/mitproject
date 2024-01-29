@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<th:block th:replace="~{/basic::setContent(~{::content})}">
+<head>
+    <meta charset="utf-8">
+</head>
+<body id="page-top">
+<th:block th:fragment="content">
+    <style>
+        .tab_menu { position: relative; }
+        .tab_menu .btn { font-size: 14px; cursor: pointer; margin-right: 0px; padding: 20px; border: 2px solid #ddd; }
+        .tab_menu .btn.is_on { font-size: 14px; font-weight: bold; color: #4e73df; background-color: white; border-bottom: 1px solid #ddd; }
+        .cont_area { margin-top: 0px; }
+        .cont { display: none; color: #fff; text-align: center; width: 90%; height: 100%; border: 2px solid #ddd; padding: 30px; }
+
+    </style>
+
+    <style>
+        /* 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 80%;
+            margin: 0 auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+    </style>
+
+    <title>진척검수처리</title>
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+                    <!-- Page Heading 해당페이지 안내문구-->
+                    <br><h1 class="h1 mb-0 text-gray-800"><center>진척검수</center></h1><br>
+
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+
+
+        <div class="tab_menu">
+            <a href="#tab1" class="btn is_on" onclick="changeTab('tab1')">진척검수계획</a>
+            <a href="#tab2" class="btn" onclick="changeTab('tab2')">진척검수처리</a>
+
+
+            <div class="cont_area">
+                <div id="tab1" class="cont">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>발주서번호</th>
+                            <th>품목코드</th>
+                            <th>품목명</th>
+                            <th>규격</th>
+                            <th>단가</th>
+                            <th>입고수량(EA)</th>
+                            <th>입고예정일</th>
+                            <th>진척검수</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:each="s, status  : ${list2}">
+                            <tr >
+                                <td th:text="${s.purchaseCode}"></td>
+                                <td th:text="${s.itemCode}"></td>
+                                <td th:text="${s.itemName}"></td>
+                                <td th:text="${s.texture}"></td>
+                                <td th:text="${s.price}"></td>
+                                <td th:text="${s.quantity}"></td>
+                                <td th:text="${#dates.format(s.contractDate,'yyyy-MM-dd')}"></td>
+                                <td th:if="${status.index == 0 or s.purchaseCode != list2[status.index - 1].purchaseCode}"> <!--status.index 현재 반복 인덱스 / status.index - 1 이전 행의 값-->
+                                    <button th:attr="data-purchase-code=${s.purchaseCode}" onclick="openPopup('tab1',this);">
+                                        <span class="text">입력</span>
+                                    </button>
+                                </td>
+                                <td th:unless="${status.index == 0 or s.purchaseCode != list2[status.index - 1].purchaseCode}"></td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+                <div id="tab2" class="cont">
+                    <!-- <h5 class="m-0 font-weight-bold text-primary" >진척검수 진행과정</h5><br> -->
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>발주서번호</th>
+                            <th>품목코드</th>
+                            <th>품목명</th>
+                            <th>규격</th>
+                            <th>진척도</th>
+                            <th>입고예정일</th>
+                            <th>진척검수</th>
+                            <th>거래처</th>
+                            <th>담당자메일</th>
+                            <th>진척검수</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:each="a, iterStat : ${maplist}">
+                            <tr th:each="b, innerIterStat : ${a.value}">
+                                <td th:if="${innerIterStat.index == 0}"  th:text="${a.key}">P11004</td> <!--th:if="${iterStat.index == 0}" th:text="${a.key}"-->
+                                <td th:unless="${innerIterStat.index == 0}"></td>
+                                <td th:text="${b.itemCode}">BA001</td>
+                                <td th:text="${b.itemName}">메인보드1호</td>
+                                <td th:text="${b.texture}">7*15*1</td>
+                                <td><img src="/진척도.jpg"></td>
+                                <td th:text="${#dates.format(b.procurementDate,'yyyy-MM-dd')}">2024-01-10</td>
+                                <td>진행중</td>
+                                <td th:text="${b.vendorName}">(주) 제이아이테크</td>
+                                <td th:text="${b.vendorEmail}">a1234@gmail.com</td>
+                                <td th:if="${innerIterStat.index == 0}">
+                                    <button th:attr="data-purchase-code=${a.key}" onclick="openPopup2('tab2',this)"><span class="text">수정</span></button>
+                                </td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- cont_area 끝-->
+        </div><!-- tab_menu 끝 -->
+
+
+        <!-- 모달 팝업(진척검수 계획) -->
+        <div id="myModal1" class="modal">
+            <div class="modal-content">
+                <!-- 모달 내용 -->
+                <span class="close-btn" onclick="closePopup()">&times;</span>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <form action="/adcess" method="post">
+                        <h5 class="m-0 font-weight-bold text-primary" >진척검수 일정입력</h5><br>
+                        <div id="modalBody1" class="modal-body">
+                        </div>
+                            <table style="width: 50%;" class="table table-bordered" width="100%" cellspacing="0" id="progressInspectionTable">
+                                <thead>
+                                <tr>
+                                    <th>차수</th>
+                                    <th>일자</th>
+                                    <th>일정추가</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1차</td>
+                                    <td><input type="date" name="a1" required></td>
+                                    <td><button class="btn btn-primary btn-icon-split" onclick="addRow()">
+                                        <span class="text">검수칸추가</span></button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <button class="btn btn-primary btn-icon-split"><span class="text">저장</span></button>
+                        </form>
+                    </div> <!--테이블 리스폰시브-->
+                </div><!-- 카드 바디 끝 -->
+            </div>
+        </div>
+
+        <!-- 모달 팝업(진척검수 처리) -->
+        <div id="myModal2" class="modal">
+            <div class="modal-content">
+                <!-- 모달 내용 -->
+                <span class="close-btn" onclick="closePopup()">&times;</span>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <h5 class="m-0 font-weight-bold text-primary" >진척검수수정</h5><br>
+                        <div id="modalBody2" class="modal-body"></div>
+                        <div id="modalBody3" class="modal-body"></div>
+                    </div> <!--테이블 리스폰시브-->
+                </div><!-- 카드 바디 끝 -->
+            </div>
+        </div>
+
+    </div><!-- DataTales Example 끝 -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        //탭으로 화면 나누기 위한 자바스크립트
+        let activeCont = ''; // 현재 활성화 된 컨텐츠 (기본: #tab1 활성화)
+
+        function changeTab(tabId) {
+            // 모든 탭버튼 클래스 제거
+            const buttons = document.querySelectorAll('.tab_menu .btn');
+            buttons.forEach(button => button.classList.remove('is_on'));
+
+            // 모든 컨텐츠 숨김
+            const contents = document.querySelectorAll('.tab_menu .cont_area .cont');
+            contents.forEach(content => content.style.display = 'none');
+
+            // 클릭한 탭버튼에 클래스 추가
+            const clickedButton = document.querySelector(`.tab_menu .btn[href="#${tabId}"]`);
+            clickedButton.classList.add('is_on');
+
+            // 클릭한 탭의 컨텐츠 표시
+            activeCont = `#${tabId}`;
+            document.querySelector(activeCont).style.display = 'block';
+        }
+
+        // 처음 로드될 때 계획 탭 활성화
+        changeTab('tab1');
+    </script>
+
+
+    <script th:inline="javascript"> //modal1
+    // 전역 변수로 선언
+    var modalBody1;
+
+        // 팝업 열기 함수 정의
+    function openPopup(tabId, button) {
+        console.log("modal1"); // 테스트
+        const modalId = (tabId === 'tab1') ? 'myModal1' : 'myModal2';
+        console.log(modalId); // 테스트
+
+        // 모달 창 열기
+        document.getElementById(modalId).style.display = 'flex';
+
+        // Ajax로 데이터를 가져오기
+        var purchaseCode = button.getAttribute('data-purchase-code');
+        console.log(purchaseCode);
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // 데이터를 받아왔을 때 모달 창에 추가
+                var data = JSON.parse(xhr.responseText);
+                console.log(data);
+                // 데이터를 받아왔을 때 모달 창에 추가
+                renderDataInModal1(data);
+            }
+        };
+        xhr.open("GET", "/getDataForPurchaseCode?pCode=" + purchaseCode, true);
+        xhr.send();
+    }
+
+    // 받아온 데이터를 모달 창에 추가하는 함수
+    function renderDataInModal1(data) {
+        console.log('들어왔나');
+        // modalBody 요소 찾기
+        modalBody1 = document.getElementById('modalBody1');
+        console.log(modalBody1);
+
+    // modalBody에 새로운 테이블 생성
+    var newTable = document.createElement('table');
+    newTable.style.width = '90%';
+    newTable.className = 'table table-bordered';
+    newTable.width = '100%';
+    newTable.cellSpacing = '0';
+
+    // 테이블 헤더 생성
+    var tableHead = document.createElement('thead');
+    var headerRow = document.createElement('tr');
+    headerRow.innerHTML = '<th>발주서번호</th>' +
+                          '<th>품목코드</th>' +
+                          '<th>품목명</th>' +
+                          '<th>규격</th>' +
+                          '<th>입고수량(EA)</th>' +
+                          '<th>입고예정일</th>' +
+                          '<th>거래처</th>' +
+                          '<th>담당자메일</th>';
+    tableHead.appendChild(headerRow);
+    newTable.appendChild(tableHead);
+
+    // 테이블 바디 생성
+    var tableBody = document.createElement('tbody');
+
+    // 데이터를 행으로 변환하여 추가
+    data.forEach(function(value) {
+    var formattedDate = new Date(value.contractDate).toISOString().slice(0, 10).replace("T", " ");
+        var row = document.createElement('tr');
+        row.innerHTML = '<td>' + value.purchaseCode + '</td>' +
+                        '<td>' + '<input type="hidden" name="itemcode" value="' + value.itemCode + '">' + value.itemCode + '</td>' +
+                        '<td>' + value.itemName + '</td>' +
+                        '<td>' + value.texture + '</td>' +
+                        '<td>' + value.quantity + '</td>' +
+                        '<td>' + formattedDate + '</td>' +
+                        '<td>' + value.vendorName + '</td>' +
+                        '<td>' + value.vendorEmail + '</td>';
+        tableBody.appendChild(row);
+    });
+
+    // 테이블에 바디 추가
+    newTable.appendChild(tableBody);
+
+    // 기존 modalBody의 내용 비우기
+    modalBody1.innerHTML = '';
+
+    // modalBody에 새로운 테이블 추가
+    modalBody1.appendChild(newTable);
+
+    var hiddenInput = document.createElement('input');
+    hiddenInput.type = 'hidden';
+    hiddenInput.value = data[0].purchaseCode; // 예시로 첫 번째 데이터의 발주서 번호를 설정
+    hiddenInput.name = 'purcode'; // 아이디 설정
+    modalBody1.appendChild(hiddenInput);
+}
+
+        // 팝업 닫기 함수 정의
+        function closePopup() {
+            // 모든 모달 창을 숨김으로 설정
+            document.getElementById('myModal1').style.display = 'none';
+            document.getElementById('myModal2').style.display = 'none';
+        }
+
+        // 팝업 모달외부를 클릭했을 때 닫기
+        window.addEventListener('click', function(event) {
+            // 클릭한 요소가 모달 외부이면서 열린 모달이 있는 경우 닫기
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+    <script>
+        // 현재 추가된 행 개수를 저장할 변수
+    var addedRows = 0;
+
+    // 진척검수입력 테이블에 칸 추가
+    function addRow() {
+        // 허용된 최대 행 개수
+        var maxRows = 2;
+
+        // 추가된 행이 최대 행 개수보다 작을 때만 실행
+        if (addedRows < maxRows) {
+            // 테이블의 tbody 요소 찾기
+            var tbody = document.getElementById('progressInspectionTable').getElementsByTagName('tbody')[0];
+
+            // 새로운 행(tr) 요소 생성
+            var newRow = document.createElement('tr');
+
+            // 차수 열에 추가될 내용
+            var orderCell = document.createElement('td');
+            orderCell.innerText = tbody.children.length + 1 + '차'; // 현재 행의 순서 + 1
+            newRow.appendChild(orderCell);
+
+            // 일자 열에 추가될 내용
+            var dateCell = document.createElement('td');
+            var dateInput = document.createElement('input');
+            dateInput.type = 'date';
+            dateInput.name = 'a1';
+            dateCell.appendChild(dateInput);
+            newRow.appendChild(dateCell);
+
+            // 저장 버튼 열에 추가될 내용
+            var saveCell = document.createElement('td');
+            var saveButton = document.createElement('button');
+            saveButton.className = 'btn btn-primary btn-icon-split';
+            saveButton.addEventListener('click', function (event) {
+                event.stopPropagation(); // 이벤트 전파 막기
+            });
+            // saveCell.appendChild(saveButton);
+            // newRow.appendChild(saveCell);
+
+            // 새로운 행을 tbody에 추가
+            tbody.appendChild(newRow);
+
+            // 추가된 행 개수 증가
+            addedRows++;
+
+            // 폼 제출 막기
+            event.preventDefault();
+        } else {
+            alert('최대 ' + maxRows + '개의 행만 추가 가능합니다.');
+        }
+    }
+    </script>
+
+
+
+
+
+    <script th:inline="javascript"> //modal2
+        // 팝업 열기 함수 정의
+function openPopup2(tabId, button) {
+    console.log("modal2");
+    const modalId = (tabId === 'tab2') ? 'myModal2' : 'myModal1';
+    console.log(modalId);
+
+    // 모달 창 열기
+    document.getElementById(modalId).style.display = 'flex';
+
+    // Ajax로 데이터를 가져오기
+    var purchaseCode = button.getAttribute('data-purchase-code');
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // 데이터를 받아왔을 때 모달 창에 추가
+            var data = JSON.parse(xhr.responseText);
+            renderDataInModal2(data);
+
+            // 두 번째 Ajax 요청
+            var xhr2 = new XMLHttpRequest();
+            xhr2.onreadystatechange = function() {
+                if (xhr2.readyState === 4 && xhr2.status === 200) {
+                    // 데이터를 받아왔을 때 모달 창에 추가
+                    var data2 = JSON.parse(xhr2.responseText);
+                    renderDataInModal3(data2);
+                }
+            };
+            xhr2.open("GET", "/getDataForPurchaseCode3?pCode=" + purchaseCode, true);
+            xhr2.send();
+        }
+    };
+    xhr.open("GET", "/getDataForPurchaseCode2?pCode=" + purchaseCode, true);
+    xhr.send();
+}
+
+// 받아온 데이터를 모달 창에 추가하는 함수
+function renderDataInModal2(data) {
+console.log('왔어?');
+    // modalBody 요소 찾기
+    var modalBody = document.getElementById('modalBody2'); console.log(modalBody);
+    // modalBody에 새로운 테이블 생성
+    var newTable = document.createElement('table');
+    newTable.style.width = '90%';
+    newTable.className = 'table table-bordered';
+    newTable.width = '100%';
+    newTable.cellSpacing = '0';
+
+    // 테이블 헤더 생성
+    var tableHead = document.createElement('thead');
+    var headerRow = document.createElement('tr');
+    headerRow.innerHTML = '<th>발주서번호</th>' +
+                          '<th>품목코드</th>' +
+                          '<th>품목명</th>' +
+                          '<th>규격</th>' +
+                          '<th>입고수량(EA)</th>' +
+                          '<th>입고예정일</th>' +
+                          '<th>거래처</th>' +
+                          '<th>담당자d메일</th>';
+    tableHead.appendChild(headerRow);
+    newTable.appendChild(tableHead);
+
+    // 테이블 바디 생성
+    var tableBody = document.createElement('tbody');
+
+    // 데이터를 행으로 변환하여 추가
+    data.forEach(function(value) {
+    var formattedDate = new Date(value.contractDate).toISOString().slice(0, 10).replace("T", " ");
+        var row = document.createElement('tr');
+        row.innerHTML = '<td>' + value.purchaseCode + '</td>' +
+                        '<td>' + '<input type="hidden" name="itemcode" value="' + value.itemCode + '">' + value.itemCode + '</td>' +
+                        '<td>' + value.itemName + '</td>' +
+                        '<td>' + value.texture + '</td>' +
+                        '<td>' + value.quantity + '</td>' +
+                        '<td>' + formattedDate + '</td>' +
+                        '<td>' + value.vendorName + '</td>' +
+                        '<td>' + value.vendorEmail + '</td>';
+        tableBody.appendChild(row);
+    });
+
+    // 테이블에 바디 추가
+    newTable.appendChild(tableBody);
+
+    // 기존 modalBody의 내용 비우기
+    modalBody.innerHTML = '';
+
+    // modalBody에 새로운 테이블 추가
+    modalBody.appendChild(newTable);
+
+    var hiddenInput = document.createElement('input');
+    hiddenInput.type = 'hidden';
+    hiddenInput.value = data[0].purchaseCode; // 예시로 첫 번째 데이터의 발주서 번호를 설정
+    hiddenInput.name = 'purcode'; // 아이디 설정
+    modalBody.appendChild(hiddenInput);
+}
+
+
+function renderDataInModal3(data) {
+    console.log('왔어?');
+    // modalBody 요소 찾기
+    var modalBody = document.getElementById('modalBody3'); console.log(modalBody);
+    // modalBody에 새로운 테이블 생성
+    var newTable = document.createElement('table');
+    newTable.style.width = '90%';
+    newTable.className = 'table table-bordered';
+    newTable.width = '100%';
+    newTable.cellSpacing = '0';
+
+    // 테이블 헤더 생성
+    var tableHead = document.createElement('thead');
+    var headerRow = document.createElement('tr');
+    headerRow.innerHTML = '<th>차수</th>' +
+                          '<th>일자</th>' +
+                          '<th>검수내용</th>' +
+                          '<th>처리</th>';
+    tableHead.appendChild(headerRow);
+    newTable.appendChild(tableHead);
+
+    // 테이블 바디 생성
+    var tableBody = document.createElement('tbody');
+
+    // 데이터를 행으로 변환하여 추가
+    data.forEach(function(value) {
+    var formattedDate = new Date(value.inspectionDate).toISOString().slice(0, 10).replace("T", " ");
+        var row = document.createElement('tr');
+        row.innerHTML = '<td>' + '<input type="hidden" name="purcode" value="' + value.purchaseCode + '">' +'<input type="hidden" name="order" value="' + value.order + '">' +value.order + '</td>' +
+                        '<td>' +  formattedDate + '</td>';
+                        // 검수 내용이 있는 경우
+    if (value.inspection_content != null) {
+        row.innerHTML += '<td>' + value.inspection_content + '</td>';
+    } else {
+        // 검수 내용이 없는 경우
+        row.innerHTML += '<td><input type="text" name="content" placeholder="(검수내용입력)"></td>';
+    }
+
+    row.innerHTML += '<td><button class="btn btn-primary btn-icon-split" onclick="addInspect(this)"> <span class="text">입력</span></button></td>';
+        tableBody.appendChild(row);
+    });
+
+    // 테이블에 바디 추가
+    newTable.appendChild(tableBody);
+
+    // 기존 modalBody의 내용 비우기
+    modalBody.innerHTML = '';
+
+    // modalBody에 새로운 테이블 추가
+    modalBody.appendChild(newTable);
+
+    var hiddenInput = document.createElement('input');
+    hiddenInput.type = 'hidden';
+    hiddenInput.value = data[0].purchaseCode; // 예시로 첫 번째 데이터의 발주서 번호를 설정
+    hiddenInput.name = 'purcode'; // 아이디 설정
+    modalBody.appendChild(hiddenInput);
+
+}
+
+
+        // 팝업 닫기 함수 정의
+        function closePopup() {
+            // 모든 모달 창을 숨김으로 설정
+            document.getElementById('myModal1').style.display = 'none';
+            document.getElementById('myModal2').style.display = 'none';
+        }
+
+        // 팝업 모달외부를 클릭했을 때 닫기
+        window.addEventListener('click', function(event) {
+            // 클릭한 요소가 모달 외부이면서 열린 모달이 있는 경우 닫기
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+    <script>
+    function addInspect(button) {
+    // 해당 행(tr)을 찾기
+        var row = button.closest('tr');
+
+        // 히든 필드 값 가져오기
+        var purchaseCode = row.querySelector('input[name="purcode"]').value;
+        var order = row.querySelector('input[name="order"]').value;
+
+        // 입력 필드 값 가져오기
+        var content = row.querySelector('input[name="content"]').value;
+
+        // GET 요청을 보낼 URL 생성
+        var url = '/insertContent?purcode=' + encodeURIComponent(purchaseCode) + '&content=' + encodeURIComponent(content)+ '&order=' + encodeURIComponent(order);
+
+        // GET 요청 보내기
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // 성공적으로 처리됐을 때의 동작
+                console.log('데이터 전송 성공!');
+            }
+        };
+        xhr.send();
+    }
+    </script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
+</th:block>
+</body>
+</th:block>
+</html>

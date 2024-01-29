@@ -1,0 +1,87 @@
+/* 테이블 전체를 감싸는 클래스 추가 */
+.table-container {
+    margin: inherit;
+    /* 가로 중앙 정렬을 위한 마진 설정 */
+    max-width: min-content;
+    /* 테이블 최대 너비 설정 (원하는 너비로 조절) */
+}
+
+/* 테이블에 대한 스타일 조정 */
+.table-bordered {
+    width: 100%;
+    /* 부모 요소에 꽉 차도록 설정 */
+    border-collapse: collapse;
+    /* 테두리가 겹치지 않도록 설정 */
+}
+
+.table-bordered th,
+.table-bordered td {
+    padding: 10px;
+    /* 셀 안의 내용과 테두리 간격 조정 */
+    text-align: center;
+    /* 가로 중앙 정렬 */
+    vertical-align: middle;
+    /* 세로 중앙 정렬 */
+    border: 1px solid #ddd;
+    /* 테두리 스타일 지정 */
+}
+
+
+
+/* input 요소의 기본 스타일 */
+.table_Body input {
+    width: 120px;
+    /* 부모 요소의 100%로 설정하여 폭을 꽉 채우도록 함 */
+    padding: cqmin;
+    /* 내부 여백 조절 */
+    box-sizing: border-box;
+    /* 내부 여백과 테두리를 포함한 전체 크기를 지정 */
+}
+
+/* 선택 상자의 스타일 */
+.table_Body select {
+    width: 100%;
+    padding: cqmin;
+    box-sizing: border-box;
+}
+
+/* 버튼의 스타일 */
+.table_Body button {
+    padding: cqmin;
+    /* 위아래로 8px, 좌우로 12px 여백 설정 */
+}
+
+/* 품목등록 위치조정 */
+
+#btn_Item_Info_Confirm {
+    margin-top: 5px;
+    /* 상단 여백을 조절하여 버튼을 아래로 이동 */
+    margin-bottom: 10px;
+    margin-left: auto;
+    /* 왼쪽 여백을 자동으로 설정하여 오른쪽으로 정렬 */
+    margin-right: auto;
+    /* 오른쪽 여백도 자동으로 설정하여 가운데 정렬 */
+}
+
+/* 품목조회 위치조정 */
+#btn_Item_Info_Search {
+    margin-top: 5px;
+    /* 상단 여백을 조절하여 버튼을 아래로 이동 */
+    margin-bottom: 10px;
+    margin-left: auto;
+    /* 왼쪽 여백을 자동으로 설정하여 오른쪽으로 정렬 */
+    margin-right: 40px;
+    /* 오른쪽 여백도 자동으로 설정하여 가운데 정렬 */
+}
+
+/* 두 버튼을 감싼 div로 버튼 우정렬 */
+#btn_Item_Info_div_align {
+    width: auto;
+    text-align: right;
+}
+
+input[readonly] {
+    border: none;
+    outline: none; /* 선택 효과 제거 */
+  }
+

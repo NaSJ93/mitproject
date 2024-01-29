@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/basic::setContent(~{::content})}">
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body id="page-top">
+<th:block th:fragment="content">
+    <title>조달계획등록</title>
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <!-- 조달계획등록 css -->
+    <link href="css/procurement_plan.css" rel="stylesheet">
+
+                    <!-- Page Heading 해당페이지 안내문구-->                    
+                    <br><h1 class="h1 mb-0 text-gray-800"><center>조달계획등록</center></h1><br>
+
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+
+            <!-- 추가된 부분: 날짜 구간 필터링을 위한 입력 폼 -->
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <h4 class="m-0 font-weight-bold text-primary">
+                    <center>조달계획목록</center>
+                </h4><br>
+                <form action="aaa" method="post">
+                    <label for="fromDate">시작 날짜:</label>
+                    <input type="date" id="fromDate" name="fromDate">
+
+                    <label for="toDate">종료 날짜:</label>
+                    <input type="date" id="toDate" name="toDate">
+
+                    <button type="submit" class="btn btn-primary btn-icon-split">
+                        <span class="text">조회</span>
+                    </button>
+
+                </form>
+                <!-- 계획서 등록 버튼 -->
+                <button class="btn btn-primary btn-icon-split" id="btn_Procurement_Plan_Confirm"><span
+                        class="text">계획서 등록</span></button>
+
+                <table class="table table-bordered" width="100%" cellspacing="0">
+
+                    <thead>
+                    <tr>
+                        <th>선택</th>
+                        <th>품목코드</th>
+                        <th>품목명</th>
+                        <th>규격</th>
+                        <th>재질</th>
+                        <th>도면번호</th>
+                        <th>도면이미지</th>
+                        <th>L/T(일)</th>
+                        <th>거래처</th>
+                        <th>생산예정일</th>
+                        <th>소요량(EA)</th>
+                        <th>재고수량(EA)</th>
+                        <th>입고수량(EA)</th>
+                        <th>입고예정일</th>
+
+                    </tr>
+                    </thead>
+                    <tbody th:if="${not #lists.isEmpty(item)}">
+                    <th:block th:each="innerList : ${item}">
+                    <tr th:each="a : ${innerList}">
+                        <!-- innerList는 List<ItemInfo> -->
+                        <td><input type="checkbox"></td>
+                        <td th:text="${a.itemCode}"></td>
+                        <td th:text="${a.itemName}"></td>
+                        <td th:text="${a.standard}"></td>
+                        <td th:text="${a.texture}"></td>
+                        <td th:text="${a.drawingNumber}"></td>
+                        <td th:text="${a.drawingImage}"></td>
+                    </tr>
+                    </th:block>
+                    </tbody>
+                </table>
+            </div>
+            <br>
+        </div>
+            </div>
+    </div>
+
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
+</th:block>
+</body>
+</th:block>
+</html>
+
+

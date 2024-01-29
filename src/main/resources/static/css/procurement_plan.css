@@ -1,0 +1,39 @@
+/* 테이블 전체를 감싸는 클래스 추가 */
+.table-container {
+    margin: 0 auto; /* 가로 중앙 정렬을 위한 마진 설정 */
+    max-width: auto /* 테이블 최대 너비 설정 (원하는 너비로 조절) */
+}
+
+/* 테이블에 대한 스타일 조정 */
+.table-bordered {
+    width: 100%; /* 부모 요소에 꽉 차도록 설정 */
+    border-collapse: collapse; /* 테두리가 겹치지 않도록 설정 */
+}
+
+.table-bordered th,
+.table-bordered td {
+    padding: 10px; /* 셀 안의 내용과 테두리 간격 조정 */
+    text-align: center; /* 가로 중앙 정렬 */
+    vertical-align: middle; /* 세로 중앙 정렬 */
+    border: 1px solid #ddd; /* 테두리 스타일 지정 */
+}
+
+/* 특이사항 텍스트 영역에 대한 스타일 조정 */
+.significant {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 10px 0;
+    height: 150px; /* 높이 조절 */
+    resize: none; /* 사용자가 수직으로만 리사이즈할 수 있도록 설정 */
+    overflow-y: auto; /* 내용이 영역을 넘어갈 경우 스크롤 표시 */
+}
+
+/* 계획서 등록버튼 위치조정 */
+
+#btn_Procurement_Plan_Confirm {
+    margin-top: 5px; /* 상단 여백을 조절하여 버튼을 아래로 이동 */
+    margin-bottom: 10px;
+    margin-left: auto; /* 왼쪽 여백을 자동으로 설정하여 오른쪽으로 정렬 */
+    margin-right: 30px; /* 오른쪽 여백도 자동으로 설정하여 가운데 정렬 */
+    display: block; /* 블록 레벨 요소로 설정하여 가로폭을 100%로 채움 */
+}

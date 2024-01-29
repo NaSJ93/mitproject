@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<th:block th:replace="~{/basic::setContent(~{::content})}">
+<head>
+    <meta charset="utf-8">
+</head>
+<body id="page-top">
+<th:block th:fragment="content">
+    <title>자재관리3-1</title>
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <!-- Page Heading 해당페이지 안내문구-->
+    <br><h1 class="h1 mb-0 text-gray-800"><center>자재입고</center></h1><br>
+
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+            <!-- <h4 class="m-0 font-weight-bold text-primary" >발주품목 재고확인 및 입고처리</h4><br> -->
+            <form action="tables3-1" method="post">
+                <label for="fromDate">시작 날짜:</label>
+                <input type="date" id="fromDate" name="fromDate">
+
+                <label for="toDate">종료 날짜:</label>
+                <input type="date" id="toDate" name="toDate">
+
+                <button type="submit" class="btn btn-primary btn-icon-split">
+                    <span class="text">조회</span>
+                </button>
+            </form>
+            <!-- 입고처리 테이블 시작 -->
+            <table class="table table-bordered" id="inboundTable">
+                <thead>
+                <tr>
+                    <th>발주번호</th>
+                    <th>품목코드</th>
+                    <th>품목명</th>
+                    <th>소요량(EA)</th>
+                    <th>기초재고(EA)</th>
+                    <th>입고수량(EA)</th>
+                    <th>생산요청일</th>
+                    <th>입고마감</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="a:${list}">
+                    <td th:text="${a.purchaseCode}">P11004</td>
+                    <td th:text="${a.itemCode}">BA001</td>
+                    <td th:text="${a.itemName}">메인보드1호</td>
+                    <td th:text="${a.quantity}">10</td>
+                    <td th:text="${a.inventory}">2</td>
+
+                    <td><input type="number" placeholder="입고수량입력" th:id="'inputQty-' + ${a.itemCode}"/></td>
+
+                    <td th:text="${#dates.format(a.ProcurementDate,'yyyy-MM-dd')}">2024-01-15</td>
+                    <td><button class="btn btn-primary btn-icon-split"
+                                th:if="${a.itemCode != null}"
+                                th:attr="data-item-code=${a.itemCode}" onclick="submitForm(this)"><span class="text">입고처리</span></button></td>
+                </tr>
+                </tbody>
+            </table>
+            <!-- 입고처리 테이블 끝 -->
+
+
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        console.log('0');
+        function submitForm(button) {
+        console.log('1');
+            var itemCode = button.getAttribute('data-item-code');
+            var inputElement = document.getElementById('inputQty-' + itemCode);
+       console.log(itemCode);
+       console.log(inputElement);
+
+            if (inputElement) {
+                var inputQty = inputElement.value;
+                console.log(inputQty);
+            } else {
+                console.error('inputElement가 null이거나 undefined입니다.');
+                return; // 중단: inputQty를 정의할 수 없으므로 더 이상 진행하지 않음
+            }
+
+            // 데이터 생성
+            var data = {
+                itemCode: itemCode,
+                inputQty: parseInt(inputQty)
+            };
+            console.log(data);
+            // POST 요청 보내기
+            fetch('/insertInbound', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 성공적으로 처리된 경우에 실행할 코드
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                // 오류 발생 시에 실행할 코드
+                console.error('Error:', error);
+            });
+        }
+    </script>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
+
+</th:block>
+</body>
+</th:block>
+</html>
