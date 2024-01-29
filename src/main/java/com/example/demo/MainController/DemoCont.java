@@ -318,50 +318,52 @@ public class DemoCont {
 
     @PostMapping("/purchoice")
     public String dddad(Model m, @RequestParam("sel") String code) {
-        log.info("제대로 왔나" + code);
 
-        List<PurchaseOrderSheet> info = mainserv.findItemInfobyCode(code);
-        log.info("1차 : " + info.get(0).toString());
-        log.info("2차 : " + info.get(0).getId().getItemInfo());
+            log.info("제대로 왔나" + code);
 
-        List<ItemInfo> itemList = new ArrayList<>();
-        List<ProcurementPlan> proList = new ArrayList<>();
+            List<PurchaseOrderSheet> info = mainserv.findItemInfobyCode(code);
+            log.info("1차 : " + info.get(0).toString());
+            log.info("2차 : " + info.get(0).getId().getItemInfo());
+
+            List<ItemInfo> itemList = new ArrayList<>();
+            List<ProcurementPlan> proList = new ArrayList<>();
 
 
-        for (int i = 0; i < info.size(); i++) {
-            log.info(i);
-            itemList.add(mainserv.test(info.get(i).getId().getItemInfo().getItemCode()));
-            log.info(i);
-            proList.add(mainserv.findItemfromProcurement(info.get(i).getId().getProductionPlan().getProductionPk(),info.get(i).getId().getItemInfo().getItemCode()));
-            log.info("dddddddddddd");
-        }
-        log.info(itemList.size());
-        log.info(itemList.get(0));
-        log.info("================================");
-        log.info(proList.size());
-        log.info(proList.get(0));
+            for (int i = 0; i < info.size(); i++) {
+                log.info(i);
+                itemList.add(mainserv.test(info.get(i).getId().getItemInfo().getItemCode()));
+                log.info(i);
+                proList.add(mainserv.findItemfromProcurement(info.get(i).getId().getProductionPlan().getProductionPk(), info.get(i).getId().getItemInfo().getItemCode()));
+                log.info("dddddddddddd");
+            }
+            log.info(itemList.size());
+            log.info(itemList.get(0));
+            log.info("================================");
+            log.info(proList.size());
+            log.info(proList.get(0));
 
-        List<ChangePurchaseOrder> change = new ArrayList<>();
-        for (int i = 0; i < info.size(); i++) {
-            change.add(new ChangePurchaseOrder(itemList.get(i).getItemCode(), itemList.get(i).getItemName(),
-                    proList.get(i).getProcurementQuantity(), proList.get(i).getProcurementDate(), itemList.get(i).getContract().getVendor().getBusinessLicense(),
-                    itemList.get(i).getContract().getVendor().getVendorName(), itemList.get(i).getPrice()));
-            log.info(proList.get(i).getProcurementDate());
-        }
-        log.info("실험 " + change.get(0).toString());
-        List<PurchaseOrderSheet> pur = mainserv.findPurchaseDateNull();
-        List<String> manyData=new ArrayList<>();
-        for(int i=0;i<pur.size();i++)
-            manyData.add(pur.get(i).getId().getPurchaseCode());
+            List<ChangePurchaseOrder> change = new ArrayList<>();
+            for (int i = 0; i < info.size(); i++) {
+                change.add(new ChangePurchaseOrder(itemList.get(i).getItemCode(), itemList.get(i).getItemName(),
+                        proList.get(i).getProcurementQuantity(), proList.get(i).getProcurementDate(), itemList.get(i).getContract().getVendor().getBusinessLicense(),
+                        itemList.get(i).getContract().getVendor().getVendorName(), itemList.get(i).getPrice()));
+                log.info(proList.get(i).getProcurementDate());
+            }
+            log.info("실험 " + change.get(0).toString());
+            List<PurchaseOrderSheet> pur = mainserv.findPurchaseDateNull();
+            List<String> manyData = new ArrayList<>();
+            for (int i = 0; i < pur.size(); i++)
+                manyData.add(pur.get(i).getId().getPurchaseCode());
 
-        Set<String> uniqueSet = new HashSet<>(manyData); //중복 제거
-        List<String> uniqueData = new ArrayList<>(uniqueSet); //중복 제거된 발주코드
-        Collections.sort(uniqueData); //정렬
+            Set<String> uniqueSet = new HashSet<>(manyData); //중복 제거
+            List<String> uniqueData = new ArrayList<>(uniqueSet); //중복 제거된 발주코드
+            Collections.sort(uniqueData); //정렬
 
-        m.addAttribute("choice", uniqueData);
-        m.addAttribute("code", code);
-        m.addAttribute("list", change);
-        log.info("끝?");
+            m.addAttribute("choice", uniqueData);
+            m.addAttribute("code", code);
+            m.addAttribute("list", change);
+            log.info("끝?");
+
         return "tables2-1";
     }
 
