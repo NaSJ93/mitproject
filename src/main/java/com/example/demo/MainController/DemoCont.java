@@ -728,6 +728,7 @@ public class DemoCont {
 
         m.addAttribute("choice", uniqueaa);
         m.addAttribute("code", code);
+        m.addAttribute("mail",itemList.get(0).getContract().getVendor().getVendorEmail());
         m.addAttribute("list", change);
 
         return "tables3-2";

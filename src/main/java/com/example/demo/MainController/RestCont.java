@@ -136,7 +136,6 @@ log.info("2차");
         }
         log.info("3차");
 
-/*
         Date date = new Date();
         if(type.equals("purchase")) {            //발주서 관련 처리
             log.info("pur");
@@ -144,7 +143,7 @@ log.info("2차");
         }else{                            //명세서 관련 처리
             log.info("inv");
             mainserv.StartInvoice(date,code);
-        }*/
+        }
 
 
     }
