@@ -35,10 +35,11 @@ dependencies {
 	// https://mvnrepository.com/artifact/javax.mail/mail
 	implementation group: 'javax.mail', name: 'mail', version: '1.4.7'
 	// javamail
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
-	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-mail:3.2.0'
 	// spring-context-support 의존성 추가
 	//implementation 'org.springframework:spring-context-support:5.3.14.RELEASE' // 사용 중인 Spring Boot 버전에 따라 버전을 조정
+
+	implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 
 
 

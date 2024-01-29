@@ -4,7 +4,6 @@ import com.example.demo.changeList.ChangeInspectionPlanModal;
 import com.example.demo.changeList.ChangeInspectionPlanModal2;
 import com.example.demo.changeList.SelectedItemDto;
 import com.example.demo.mainEntity.*;
-import com.example.demo.mainService.InventoryReportService;
 import com.example.demo.mainService.Mainserv;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -13,10 +12,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.activation.DataHandler;
 import javax.mail.*;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import javax.mail.internet.*;
+import javax.mail.util.ByteArrayDataSource;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -26,8 +26,6 @@ import java.util.*;
 public class RestCont {
 
     private Mainserv mainserv;
-
-    private InventoryReportService inventoryReportService;
 
 
     //조달계획 등록(1-3)
@@ -83,11 +81,7 @@ public class RestCont {
         log.info("type: "+type);
         log.info("Email: " + email);
         log.info("Manager Email: " + managerEmail);
-       // log.info("Password: " + password);
-        /**/
-        //log.info(mainserv.findVendorAll());
 
-       // log.info(attachment.getContentType());
 
         Properties prop = new Properties();
         prop.put("mail.smtp.starttls.enable", "true");
@@ -103,6 +97,8 @@ public class RestCont {
                 return new PasswordAuthentication(managerEmail, password);
             }
         });
+
+
 log.info("2차");
         try {
             MimeMessage message = new MimeMessage(session); log.info("2-1차");
@@ -114,12 +110,19 @@ log.info("2차");
 
             // Text
             message.setText("내용을 입력하세요");    //메일 내용을 입력
-            //message.setContent(attachment, "text/plain; charset=UTF-8");
 
-            // Attach file
-           /* MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.addAttachment(attachment.getOriginalFilename(), new ByteArrayResource(attachment.getBytes()));*/
+            // 파일 첨부
+            MimeBodyPart attachmentPart = new MimeBodyPart();
+            attachmentPart.setDataHandler(new DataHandler(new ByteArrayDataSource(attachment.getBytes(), attachment.getContentType())));
+            attachmentPart.setFileName(attachment.getOriginalFilename());
 
+            // 파일 첨부한 MimeBodyPart를 메시지에 추가
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(attachmentPart);
+            message.setContent(multipart);
+
+            // 메일 전송
+            Transport.send(message);
 
             // send the message
             Transport.send(message); log.info("2-4차");////전송
@@ -127,6 +130,8 @@ log.info("2차");
         } catch (AddressException e) {
             e.printStackTrace();
         } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         log.info("3차");
@@ -140,6 +145,8 @@ log.info("2차");
             log.info("inv");
             mainserv.StartInvoice(date,code);
         }*/
+
+
     }
 
     @GetMapping("/getDataForPurchaseCode")
