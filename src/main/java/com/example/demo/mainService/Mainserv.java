@@ -84,6 +84,8 @@ public interface Mainserv {
     List<PurchaseOrderSheet> findPurchaseDatePresent();
     //일정 입력 됐는지 확인
     List<Inspection> findInspectionDate1IsNotNull();
+    //일정 입력 및 미완 진척검수
+    List<Inspection> findInspectionDate1IsNotNullandComple();
     //생산계획코드 검색용
     String findProcodbyPurItem(String purcode,String itemcode);
     void saveDate1(java.util.Date date1,String purcode,String procode,String itemcode);

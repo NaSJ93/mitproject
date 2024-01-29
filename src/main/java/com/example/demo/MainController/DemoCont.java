@@ -376,17 +376,35 @@ public class DemoCont {
         3. change에 해당하는 내용 집어넣음
 
         .map<p001,change>
+
+        ++inspection_date1에 값이 있으면 출력x
          */
         List<PurchaseOrderSheet> pur=mainserv.findPurchaseDatePresent();  //발행된 발주서 검색 p001, p002,p003 가 있다고 가정
         log.info("1번"+pur.size());                                          //수정 : p00, p00 이렇게 나옴 -> 이걸로 숫자를 알수 있긴한데,,,,
+        List<Inspection> dateInspect = mainserv.findInspectionDate1IsNotNull();
         List<ItemInfo> itemList = new ArrayList<>();
         List<ProcurementPlan> proList = new ArrayList<>();
         List<ChangeInspectionPlan> change = new ArrayList<>();
 
+        log.info("몇"+dateInspect.size());
+
 ///////////중복제거
         List<String> aa=new ArrayList<>();//(발주서코드 저장)
-        for(int i=0;i<pur.size();i++){ //조달계획에 해당하는 발주코드 추출 (품목이 여러개면 발주서도 중복됨)
-            aa.add(pur.get(i).getId().getPurchaseCode());
+        for (PurchaseOrderSheet purItem : pur) {
+            boolean isMatched = false;  //매치되지 않은 상태
+
+            for (Inspection inspectItem : dateInspect) {
+                if (purItem.getId().getPurchaseCode().equals(inspectItem.getPurchaseOrderSheet().getId().getPurchaseCode())) {
+                    // 발주서 코드가 서로 일치하는 경우, 일치하는 것이 있다고 표시
+                    isMatched = true;
+                    break;
+                }
+            }
+
+            // 발주서 코드가 서로 일치하지 않는 경우에만 aa에 추가
+            if (!isMatched) { //매치되지 않으면 저장
+                aa.add(purItem.getId().getPurchaseCode());
+            }
         }
         Set<String> uniqueSet = new HashSet<>(aa); //중복 제거
         List<String> uniqueaa = new ArrayList<>(uniqueSet); //중복 제거된 발주코드
@@ -417,10 +435,11 @@ public class DemoCont {
         }
         log.info("4번"+change.size());
         log.info(change.toString());
-        m.addAttribute("list2",change);
+        m.addAttribute("list2",change); //진척검수계획 tab1
 
 
-        List<Inspection> datelist = mainserv.findInspectionDate1IsNotNull(); //진척검수 일정 입력한 p00, p01 출력하기
+//////////////////////////////mainserv.findInspecCompleteIsNotNull()
+        List<Inspection> datelist = mainserv.findInspectionDate1IsNotNullandComple(); //진척검수 일정 입력한 p00, p01 출력하기
         //발주서번호	품목코드	품목명	규격	진척도	입고예정일	진척검수	거래처	담당자메일	진척검수
         List<PurchaseOrderSheet> purchaseOrderSheetItemInfos=new ArrayList<>();
         List<ItemInfo> itemInfos =new ArrayList<>();

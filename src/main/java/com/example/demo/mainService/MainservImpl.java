@@ -204,7 +204,12 @@ public class MainservImpl implements Mainserv {
 
     @Override
     public List<Inspection> findInspectionDate1IsNotNull() {
-        return inspectionRepo.findInspectionDate1IsNotNull();
+        return inspectionRepo.findInspectionDate1isNotNull();
+    }
+
+    @Override
+    public List<Inspection> findInspectionDate1IsNotNullandComple() {
+        return inspectionRepo.findInspectionDate1isNotNullandCompleisNull();
     }
 
     @Override
