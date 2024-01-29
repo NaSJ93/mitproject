@@ -82,7 +82,9 @@
                                     <td><input type="number" name="count" class="count" /></td>
                                     <td><input type="date" name="date" class="date" /></td>
                                 </tr>
+                                <tr th:if="!${a.etc ne null and a.etc ne ''}"><td></td></tr>
                         </th:block>
+                        </tbody>
                     </table>
                 </form>
             </div>

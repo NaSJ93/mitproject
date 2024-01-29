@@ -77,11 +77,11 @@
 
             <h2>메일 발송. </h2>
 
-            <form id="mailForm" method="post">  <!--enctype="multipart/form-data"-->
-                <!--거래처 메일<input type="text" id="email" value="ddd"><br>
+            <form id="mailForm" method="post" enctype="multipart/form-data">  <!--enctype="multipart/form-data"-->
+                거래처 메일<input type="text" id="email" th:value="${mail}"><br>
                 담당자 메일<input type="text" id="managerEmail"><br>
                 비밀번호<input type="password" id="password"><br>
-                첨부파일<input type="file" accept=".pdf" id="attachment" ><br>-->
+                첨부파일<input type="file" accept=".pdf" id="attachment" ><br>
                 <input type="hidden" th:value="${code}" id="code" >
                 <input type="hidden" value="purchase" id="type" >
                 <button class="btn_confirm">발송</button>

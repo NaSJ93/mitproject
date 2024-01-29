@@ -44,10 +44,11 @@ addEventListener("DOMContentLoaded",function(){ //문서가 불러와지면
         */
 
                     var formData = new FormData();
-                    /*formData.append("email", document.getElementById("email").value);
+                    formData.append("email", document.getElementById("email").value);
                     formData.append("managerEmail", document.getElementById("managerEmail").value);
                     formData.append("password", document.getElementById("password").value);
-                    formData.append("attachment", document.getElementById("attachment").files[0]); // 파일 추가*/
+
+                    formData.append("attachment", document.getElementById("attachment").files[0]); // 파일 추가
                     formData.append("code", document.getElementById("code").value);
                     formData.append("type", document.getElementById("type").value);
 

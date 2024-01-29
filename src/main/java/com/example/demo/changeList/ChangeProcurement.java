@@ -37,4 +37,6 @@ public class ChangeProcurement {
 
     private Long inventory;
 
+    private String etc; //구분용
+
 }

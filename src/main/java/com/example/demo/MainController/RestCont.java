@@ -3,19 +3,20 @@ package com.example.demo.MainController;
 import com.example.demo.changeList.ChangeInspectionPlanModal;
 import com.example.demo.changeList.ChangeInspectionPlanModal2;
 import com.example.demo.changeList.SelectedItemDto;
-import com.example.demo.mainDTO.InventoryReportDTO;
 import com.example.demo.mainEntity.*;
 import com.example.demo.mainService.InventoryReportService;
 import com.example.demo.mainService.Mainserv;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
+import javax.mail.*;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.util.*;
 
 
@@ -72,19 +73,65 @@ public class RestCont {
     //발주서 발행 및 발송
     @PostMapping("/gogogo")
     @ResponseBody
-    public void asdf(@RequestParam("code") String code,@RequestParam("type") String type) {
-        /*@RequestParam("email") String email,
-        @RequestParam("managerEmail") String managerEmail,
-        @RequestParam("password") String password,
+    public void asdf(@RequestParam("code") String code,@RequestParam("type") String type,
+                     @RequestParam("email") String email,
+                     @RequestParam("managerEmail") String managerEmail,
+                     @RequestParam("password") String password,
+                     @RequestParam("attachment") MultipartFile attachment) {
+        /*
         @RequestParam("attachment") MultipartFile attachment,*/
-
-        /*log.info("Email: " + email);
+        log.info("type: "+type);
+        log.info("Email: " + email);
         log.info("Manager Email: " + managerEmail);
-        log.info("Password: " + password);*/
+       // log.info("Password: " + password);
+        /**/
         //log.info(mainserv.findVendorAll());
 
        // log.info(attachment.getContentType());
-        log.info(type+"dddddd");
+
+        Properties prop = new Properties();
+        prop.put("mail.smtp.starttls.enable", "true");
+        prop.put("mail.smtp.host", "smtp.gmail.com");
+        prop.put("mail.smtp.auth", "true");
+        prop.put("mail.smtp.port", "587");
+        prop.put("mail.smtp.ssl.protocols", "TLSv1.2");
+
+        log.info("1차");
+
+        Session session = Session.getDefaultInstance(prop, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(managerEmail, password);
+            }
+        });
+log.info("2차");
+        try {
+            MimeMessage message = new MimeMessage(session); log.info("2-1차");
+            message.setFrom(new InternetAddress(email));    log.info("2-2차");        //수신자메일주소
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email)); log.info("2-3차");
+
+            // Subject
+            message.setSubject("제목을 입력하세요"); //메일 제목을 입력
+
+            // Text
+            message.setText("내용을 입력하세요");    //메일 내용을 입력
+            //message.setContent(attachment, "text/plain; charset=UTF-8");
+
+            // Attach file
+           /* MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.addAttachment(attachment.getOriginalFilename(), new ByteArrayResource(attachment.getBytes()));*/
+
+
+            // send the message
+            Transport.send(message); log.info("2-4차");////전송
+            System.out.println("message sent successfully...");
+        } catch (AddressException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+        log.info("3차");
+
+/*
         Date date = new Date();
         if(type.equals("purchase")) {            //발주서 관련 처리
             log.info("pur");
@@ -92,7 +139,7 @@ public class RestCont {
         }else{                            //명세서 관련 처리
             log.info("inv");
             mainserv.StartInvoice(date,code);
-        }
+        }*/
     }
 
     @GetMapping("/getDataForPurchaseCode")

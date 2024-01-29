@@ -278,15 +278,24 @@ public class DemoCont {
                     log.info("삭제 후 " + itemInfo.size());
                 }
                 log.info("삭제 됐? " + itemInfo.size());
-
+                        String str="ㅇㅇ";
                         for (int i = 0; i < itemInfo.size(); i++) {
                             if (itemInfo.get(i).getPrice() != null) { //가격이 등록되어 있다는 것은 계약이 되어 있다는 소리
                                 if (itemInfo.get(i).getItemCount() * 1.20 * productionPlans.get(j).getProductionQuantity() > itemInfo.get(i).getInventory()) { //기본재고가 120% 보다 많으면 생산 필요 x
                                     //조달계획서에 품목 등록
-                                    pro.add(new ChangeProcurement(productionPlans.get(j).getProductionPk(),itemInfo.get(i).getItemCode(), itemInfo.get(i).getItemName(), itemInfo.get(i).getStandard(),
-                                    itemInfo.get(i).getTexture(), itemInfo.get(i).getDrawingNumber(), itemInfo.get(i).getDrawingImage(), itemInfo.get(i).getImageType(),
-                                    itemInfo.get(i).getLeadTime(), itemInfo.get(i).getContract().getVendor().getVendorName(), productionPlans.get(j).getProductionDate(),
-                                    productionPlans.get(j).getProductionQuantity(), itemInfo.get(i).getItemCount(), itemInfo.get(i).getInventory()));
+                                    if(i<(itemInfo.size()-1)) {
+                                        pro.add(new ChangeProcurement(productionPlans.get(j).getProductionPk(), itemInfo.get(i).getItemCode(), itemInfo.get(i).getItemName(), itemInfo.get(i).getStandard(),
+                                                itemInfo.get(i).getTexture(), itemInfo.get(i).getDrawingNumber(), itemInfo.get(i).getDrawingImage(), itemInfo.get(i).getImageType(),
+                                                itemInfo.get(i).getLeadTime(), itemInfo.get(i).getContract().getVendor().getVendorName(), productionPlans.get(j).getProductionDate(),
+                                                productionPlans.get(j).getProductionQuantity(), itemInfo.get(i).getItemCount(), itemInfo.get(i).getInventory(), str));
+                                    }else{
+                                        log.info("없냐");
+                                        pro.add(new ChangeProcurement(productionPlans.get(j).getProductionPk(), itemInfo.get(i).getItemCode(), itemInfo.get(i).getItemName(), itemInfo.get(i).getStandard(),
+                                                itemInfo.get(i).getTexture(), itemInfo.get(i).getDrawingNumber(), itemInfo.get(i).getDrawingImage(), itemInfo.get(i).getImageType(),
+                                                itemInfo.get(i).getLeadTime(), itemInfo.get(i).getContract().getVendor().getVendorName(), productionPlans.get(j).getProductionDate(),
+                                                productionPlans.get(j).getProductionQuantity(), itemInfo.get(i).getItemCount(), itemInfo.get(i).getInventory(), ""));
+                                    }
+
                                 }
                             }
 
@@ -361,6 +370,7 @@ public class DemoCont {
 
             m.addAttribute("choice", uniqueData);
             m.addAttribute("code", code);
+            m.addAttribute("mail",pur.get(0).getId().getItemInfo().getContract().getVendor().getVendorEmail());
             m.addAttribute("list", change);
             log.info("끝?");
 
