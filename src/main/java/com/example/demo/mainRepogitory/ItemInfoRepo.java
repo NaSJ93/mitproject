@@ -36,6 +36,9 @@ public interface ItemInfoRepo extends JpaRepository<ItemInfo,String> {
     @Query(value = "select * from item_info where contract_contract_code is not null ",nativeQuery = true)
     List<ItemInfo> findContractIsNotNull();
 
+    @Query(value = "select * from item_info where contract_contract_code is null ",nativeQuery = true)
+    List<ItemInfo> findContractIsNull();
+
 //재고수량에 값 입력 (이거 할때 주의 사항! : [원래 품목에 있는 기초재고]+[입고수량] 을 입력해야함
     @Transactional
     @Modifying

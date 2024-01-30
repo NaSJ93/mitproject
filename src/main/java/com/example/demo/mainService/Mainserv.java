@@ -37,15 +37,20 @@ public interface Mainserv {
     // ?월 ~ ?월까지 생산계획 검색 및 complete가 ?인 것만 출력 (완료 미완료 구분)
     List<ProductionPlan> findByProductionComple(Date startDate, Date endDate, Boolean complete);
 
+//계약서 관련
+    //계약서 숫자 세기
+    int countContract();
 
-
-//계약서 저장
+    //계약서 저장
     Contract regiContract(ContractDTO dto,Vendor ven);
-//품목에 계약서 연동
+    //품목에 계약서 연동
     void connectItemAndContract(Contract con,String itemcode,Long price,Long leadtime);
-//계약서 조회
+    //계약서 조회
     List<Contract> findByContactDateBetween(java.util.Date fromDate, java.util.Date toDate);
     List<ItemInfo> findContractIsNotNull();
+    //계약서에 등록할 수 있는 품목 출력용
+    List<ItemInfo> findContractIsNull();
+
 
 
 //Vendor 검색

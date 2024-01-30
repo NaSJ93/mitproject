@@ -122,9 +122,6 @@ log.info("2차");
             message.setContent(multipart);
 
             // 메일 전송
-            Transport.send(message);
-
-            // send the message
             Transport.send(message); log.info("2-4차");////전송
             System.out.println("message sent successfully...");
         } catch (AddressException e) {

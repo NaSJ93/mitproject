@@ -164,7 +164,36 @@ public class DemoCont {
 
     @GetMapping("/tables1-2") // 계약조회 페이지
     public void vender(Model m){
-        m.addAttribute("vendor",mainserv.findVendorAll());
+        List<ItemInfo> itemlist=mainserv.findContractIsNull();
+        List<Changedddddd> list=new ArrayList<>();
+        //if(!itemlist.isEmpty()){
+        for(int i=0;i<itemlist.size();i++){
+            list.add(new Changedddddd(itemlist.get(i).getItemCode(),itemlist.get(i).getItemName(),itemlist.get(i).getTexture()));
+        }
+        //}
+        List<Vendor> vendors=mainserv.findVendorAll();
+
+        int count=mainserv.countContract();
+        log.info(count+"몇개");
+        String name="";
+        if(count==0){
+            name+="A00"+count;
+            m.addAttribute("name",name);
+        } else if (count>0 && count<10) {
+            name+="A00"+count;
+            m.addAttribute("name",name);
+        } else if (count>9 && count<100) {
+            name+="A0"+count;
+            m.addAttribute("name",name);
+        } else if (count>100) {
+            name+="A"+count;
+            m.addAttribute("name",name);
+        }
+
+
+
+        m.addAttribute("item",list);
+        m.addAttribute("vendor",vendors);
     }
 
     @PostMapping("/abcd")     //계약등록 페이지
@@ -186,6 +215,23 @@ public class DemoCont {
         for(int i=0;i<itemcode.length;i++){
             log.info("아템"+itemcode[i]);
             mainserv.connectItemAndContract(mainserv.regiContract(dto, mainserv.findvendor(business)), itemcode[i], price[i], leadtime[i]);
+        }
+
+        int count=mainserv.countContract();
+        log.info(count+"몇개");
+        String name="";
+        if(count==0){
+            name+="A00"+count;
+            m.addAttribute("name",name);
+        } else if (count>0 && count<10) {
+            name+="A00"+count;
+            m.addAttribute("name",name);
+        } else if (count>9 && count<100) {
+            name+="A0"+count;
+            m.addAttribute("name",name);
+        } else if (count>99) {
+            name+="A"+count;
+            m.addAttribute("name",name);
         }
 
         return "redirect:/tables1-2";

@@ -30,8 +30,6 @@
 
     <!--테이블 -->
     <link href="css/item_Info.css" rel="stylesheet">
-    <!-- 모달 css -->
-    <link  href="css/modal.css" rel="stylesheet" type="text/css">
 
 
     <!-- Page Heading 해당페이지 안내문구-->
@@ -169,32 +167,7 @@
         changeTab('tab1');
     </script>
 
-    <script>
-        // 팝업 열기 함수 정의
-        function openPopup(tabId) {
-            // 탭에 따라서 모달 창 선택
-            const modalId = (tabId === 'tab1') ? 'myModal1' : 'myModal2';
-            document.getElementById(modalId).style.display = 'flex';
-        }
 
-        // 팝업 닫기 함수 정의
-        function closePopup() {
-            // 모든 모달 창을 숨김으로 설정
-            document.getElementById('myModal1').style.display = 'none';
-            document.getElementById('myModal2').style.display = 'none';
-        }
-
-        // 팝업 모달외부를 클릭했을 때 닫기
-        window.addEventListener('click', function(event) {
-            // 클릭한 요소가 모달 외부이면서 열린 모달이 있는 경우 닫기
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
-        });
-    </script>
 
     <script>
         function filterSubCategory() {

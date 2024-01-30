@@ -88,6 +88,11 @@ public class MainservImpl implements Mainserv {
     }
 
     @Override
+    public int countContract() {
+        return contractRepo.countContract();
+    }
+
+    @Override
     public Contract regiContract(ContractDTO dto,Vendor ven) {
         contractRepo.save(toContract(dto,ven));
         return contractRepo.findById(dto.getContractCode()).get();
@@ -112,6 +117,11 @@ public class MainservImpl implements Mainserv {
     @Override
     public List<ItemInfo> findContractIsNotNull() {
         return itemInfoRepo.findContractIsNotNull();
+    }
+
+    @Override
+    public List<ItemInfo> findContractIsNull() {
+        return itemInfoRepo.findContractIsNull();
     }
 
       /*  @Override

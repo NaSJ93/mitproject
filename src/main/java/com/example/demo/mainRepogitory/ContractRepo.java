@@ -24,4 +24,7 @@ public interface ContractRepo extends JpaRepository<Contract,String> {
     @Query("SELECT p FROM Contract p WHERE p.contractDate BETWEEN :fromDate AND :toDate")
     List<Contract> findByContractDateBetween(Date fromDate, Date toDate);
 
+    @Query(value = "select count(*) from contract",nativeQuery = true)
+    int countContract();
+
 }
