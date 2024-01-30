@@ -68,14 +68,14 @@
                         <tr>
                             <td class="item_Code"><input id="test" type="text" placeholder="자동생성" name="s1"></td>
                             <td><input id="item_Name" type="text" placeholder="품목입력" name="s2"/></td>
-                            <td><select class="Large" name="s3" id="largeSelect" onchange="filterSubCategory()">
+                            <td><select class="Large" name="s3" id="largeSelect" onchange="filterSubCategory(); aaa(this);">
                                 <option value="0">대분류 선택</option>
                                 <option value="반도체(B)">반도체(B)</option>
                                 <option value="연결부품(C)">연결부품(C)</option>
                                 <option value="액정(G)">액정(G)</option>
                             </select>
                             </td>
-                            <td><select class="Medium" name="s4" id="mediumSelect">
+                            <td><select class="Medium" name="s4" id="mediumSelect" onchange="bbb(this)">
                                 <option value="0">중분류 선택</option>
                                 <option value="메인보드(A)">메인보드(A)</option>
                                 <option value="메모리카드(S)">메모리카드(S)</option>
@@ -199,6 +199,29 @@
         option.text = text;
         selectElement.add(option);
         }
+    </script>
+
+    <script>
+        var a;
+        var b; //밖에다 선언
+
+        function aaa(code){
+        console.log(code);
+        a=$(code).val();
+        console.log(a);
+        }
+        console.log(a,"ff"); //안됨
+
+        function bbb(code2){
+        console.log(code2);
+        b=$(code2).val();
+        console.log(a,"ff"); //됨
+        console.log(b);
+
+        //이제 여기에 값이 들어오면 함수 또 선언해서 작업하면 될듯
+        }
+
+        console.log(b,"ff"); //안됨
     </script>
     <!--테이블 기능구현-->
     <script src="js/item_Info.js"></script>
