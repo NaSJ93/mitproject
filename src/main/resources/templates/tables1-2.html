@@ -148,7 +148,7 @@
                                 <!-- 품목명 -->
                                 <td th:text="${co.itemname}"></td>
                                 <!-- 계약서 (이미지 다운로드) -->
-                                <td><a th:download="${co.vendorName+'.'+co.imageType}"
+                                <td><a th:download="${'계약'+'.'+co.imageType}"
                                        th:href="'data:' + ${co.imageType} + ';base64,' + ${co.contractScan}"
                                        th:target="'_blank'">다운로드</a></td>
                             </tr>

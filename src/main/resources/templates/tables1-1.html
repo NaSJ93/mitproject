@@ -131,7 +131,7 @@
                             <td th:text="${a.itemCount}"></td>
                             <td th:text="${a.inventory}"></td>
                             <td th:text="${a.drawingNumber}"></td>
-                            <td><a th:download="${a.drawingNumber +'.'+a.imageType}" th:href="'data:' + ${a.imageType} + ';base64,' + ${a.drawingImage}" th:target="'_blank'">다운로드</a></td>
+                            <td><a th:download="${'도면' +'.'+a.imageType}" th:href="'data:' + ${a.imageType} + ';base64,' + ${a.drawingImage}" th:target="'_blank'">다운로드</a></td>
                             <td th:if="${a.contract}"><a th:download="${'계약'+'.'+a.contract.imageType}" th:href="'data:' + ${a.contract.imageType} + ';base64,' + ${a.contract.ContractScan}" th:target="'_blank'"><th:block th:text="${a.contract.vendor.vendorName}"></th:block></a></td>
                         </tr>
                         </tbody>
