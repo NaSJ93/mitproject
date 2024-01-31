@@ -115,6 +115,9 @@ public String login(Model model) {
     }
 ///////////인쇄 끝////////
 
+
+//////////////////
+
     @GetMapping("/")
     public String dd(Model m) {
         m.addAttribute("countBA",mainserv.countBA());
