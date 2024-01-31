@@ -51,10 +51,6 @@ public class MainservImpl implements Mainserv {
         return procurementPlanRepo.findById_ProductionPlan_ProductionPk(productionPlanProductionPk);
     }
 
-    @Override
-    public List<ItemInfo> fidne() {
-        return itemInfoRepo.findContractIsNotNull();
-    }
 
     @Override
     public List<ItemInfo> readItemInfo() {
@@ -166,6 +162,7 @@ public class MainservImpl implements Mainserv {
     public void updateProcure(java.util.Date date, Long quantity, String procode,String itemcode) {
         procurementPlanRepo.updateProcure(date,quantity,procode,itemcode);
     }
+
 
     @Override
     public void createInOutbound(String item) {

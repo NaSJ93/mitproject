@@ -322,7 +322,7 @@ public class DemoCont {
 
             for (int j = 0; j < productionPlans.size(); j++) {
                 registeredPlan=mainserv.findById_ProductionPlan_ProductionPk(productionPlans.get(j).getProductionPk()); //조달계획서에 등록되어 있는 품목 출력
-                itemInfo= mainserv.readItemInfo(); //모든 품목 출력 (위와 비교할 거임
+                itemInfo= mainserv.findContractIsNotNull(); //계약서 등록된 모든 품목 출력 (위와 비교할 거임
                 log.info(itemInfo.size());
                 log.info("등록된게 몇개냐"+registeredPlan.size());
                 for (int y = 0; y < registeredPlan.size(); y++) { //여긴 조달계획서에 등록되어 있는거 확인하는 테스트 코드 (생산계획id + 품목 id)
@@ -343,20 +343,22 @@ public class DemoCont {
                             if (itemInfo.get(i).getPrice() != null) { //가격이 등록되어 있다는 것은 계약이 되어 있다는 소리
                                 if (itemInfo.get(i).getItemCount() * 1.20 * productionPlans.get(j).getProductionQuantity() > itemInfo.get(i).getInventory()) { //기본재고가 120% 보다 많으면 생산 필요 x
                                     //조달계획서에 품목 등록
+                                    log.info("숫자"+i);
                                     if(i<(itemInfo.size()-1)) {
                                         pro.add(new ChangeProcurement(productionPlans.get(j).getProductionPk(), itemInfo.get(i).getItemCode(), itemInfo.get(i).getItemName(), itemInfo.get(i).getStandard(),
                                                 itemInfo.get(i).getTexture(), itemInfo.get(i).getDrawingNumber(), itemInfo.get(i).getDrawingImage(), itemInfo.get(i).getImageType(),
                                                 itemInfo.get(i).getLeadTime(), itemInfo.get(i).getContract().getVendor().getVendorName(), productionPlans.get(j).getProductionDate(),
                                                 productionPlans.get(j).getProductionQuantity(), itemInfo.get(i).getItemCount(), itemInfo.get(i).getInventory(), str));
-                                    }else{
-                                        log.info("없냐");
-                                        pro.add(new ChangeProcurement(productionPlans.get(j).getProductionPk(), itemInfo.get(i).getItemCode(), itemInfo.get(i).getItemName(), itemInfo.get(i).getStandard(),
-                                                itemInfo.get(i).getTexture(), itemInfo.get(i).getDrawingNumber(), itemInfo.get(i).getDrawingImage(), itemInfo.get(i).getImageType(),
-                                                itemInfo.get(i).getLeadTime(), itemInfo.get(i).getContract().getVendor().getVendorName(), productionPlans.get(j).getProductionDate(),
-                                                productionPlans.get(j).getProductionQuantity(), itemInfo.get(i).getItemCount(), itemInfo.get(i).getInventory(), ""));
                                     }
-
                                 }
+
+                            }
+                            if(i==(itemInfo.size()-1)){
+                                log.info("없냐");
+                                pro.add(new ChangeProcurement(productionPlans.get(j).getProductionPk(), itemInfo.get(i).getItemCode(), itemInfo.get(i).getItemName(), itemInfo.get(i).getStandard(),
+                                        itemInfo.get(i).getTexture(), itemInfo.get(i).getDrawingNumber(), itemInfo.get(i).getDrawingImage(), itemInfo.get(i).getImageType(),
+                                        itemInfo.get(i).getLeadTime(), itemInfo.get(i).getContract().getVendor().getVendorName(), productionPlans.get(j).getProductionDate(),
+                                        productionPlans.get(j).getProductionQuantity(), itemInfo.get(i).getItemCount(), itemInfo.get(i).getInventory(), ""));
                             }
 
                         }

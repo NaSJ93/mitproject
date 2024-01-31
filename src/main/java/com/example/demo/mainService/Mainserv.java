@@ -21,7 +21,6 @@ public interface Mainserv {
 
 
 
-    List<ItemInfo> fidne();
 //품목정보등록 관련
     List<ItemInfo> readItemInfo(); //품목정보등록 읽어보기
     List<Medium> readMedium(); //Medium 읽어오기
@@ -66,6 +65,7 @@ public interface Mainserv {
 
 //조달계획 등록
     void updateProcure(java.util.Date date, Long quantity, String procode, String itemcode);
+
 //입출고 항목 생성
     void createInOutbound(String item);
 
