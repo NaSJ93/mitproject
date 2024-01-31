@@ -835,10 +835,10 @@ public class DemoCont {
 
 
             List<InboundOutbound> outbounds = mainserv.findNotStartOutbound(); //입고 마감 및 출고 x 품목들 a1, a2....
-            //List<ChangeProcurement> pro = new ArrayList<>(); //필요한가?
             List<ChangeOutbound> out = new ArrayList<>();
-            List<ProcurementPlan> pro = new ArrayList<>(); //생산계획서에 해당하는 품목 저장
+            List<ProcurementPlan> pro; //생산계획서에 해당하는 품목 저장
             List<String> outItems =new ArrayList<>();
+            List<Long> proQuan=new ArrayList<>();
             List<Date> proDate =new ArrayList<>();
             for (int j = 0; j < productionPlans.size(); j++) {
                 pro=mainserv.findById_ProductionPlan_ProductionPk(productionPlans.get(j).getProductionPk()); //생산계획서에 해당하는 품목 출력
@@ -846,6 +846,7 @@ public class DemoCont {
                     for(int k=0;k<outbounds.size();k++){
                         if(pro.get(i).getId().getItemInfo().getItemCode().equals(outbounds.get(k).getItemInfo().getItemCode())){
                             outItems.add(outbounds.get(k).getItemInfo().getItemCode());
+                            proQuan.add(pro.get(j).getProcurementQuantity());
                             proDate.add(productionPlans.get(j).getProductionDate());
                         }
 
@@ -862,7 +863,7 @@ public class DemoCont {
                 list.add(ChangeOutbound.builder().
                         itemCode(itemInfos.get(i).getItemCode()).
                         itemName(itemInfos.get(i).getItemName()).
-                        itemCount(itemInfos.get(i).getItemCount()).
+                        itemCount(proQuan.get(i)).
                         productionDate(proDate.get(i)).
                         inventory(itemInfos.get(i).getInventory())
                         .build());
