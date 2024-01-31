@@ -42,5 +42,9 @@ public interface InboundOutRepo extends JpaRepository<InboundOutbound,String> {
     @Query("select i from InboundOutbound i where i.inboundDate is not null and i.outboundDate is null")
     List<InboundOutbound> findNotStartOutbound();
 
+    //
+    @Query("select count(i) from InboundOutbound i where i.inboundDate is not null and i.outboundDate is not null and i.itemInfo.itemCode=:itemcode")
+    int countOutbound(String itemcode);
+
 
 }

@@ -114,6 +114,7 @@
                             <th>규격</th>
                             <th>재질</th>
                             <th>개수(EA)</th>
+                            <th>기초재고(EA)</th>
                             <th>도면번호</th>
                             <th>도면이미지</th>
                             <th>거래처</th>
@@ -128,6 +129,7 @@
                             <td th:text="${a.standard}"></td>
                             <td th:text="${a.texture}"></td>
                             <td th:text="${a.itemCount}"></td>
+                            <td th:text="${a.inventory}"></td>
                             <td th:text="${a.drawingNumber}"></td>
                             <td><a th:download="${a.drawingNumber +'.'+a.imageType}" th:href="'data:' + ${a.imageType} + ';base64,' + ${a.drawingImage}" th:target="'_blank'">다운로드</a></td>
                             <td th:if="${a.contract}"><a th:download="${'계약'+'.'+a.contract.imageType}" th:href="'data:' + ${a.contract.imageType} + ';base64,' + ${a.contract.ContractScan}" th:target="'_blank'"><th:block th:text="${a.contract.vendor.vendorName}"></th:block></a></td>
@@ -217,13 +219,14 @@
             addOption(subCategoryDropdown, "플랫(F)", "플랫(F)");
             break;
         }
+
         }
 
         function addOption(selectElement, value, text) {
-        var option = document.createElement("option");
-        option.value = value;
-        option.text = text;
-        selectElement.add(option);
+            var option = document.createElement("option");
+            option.value = value;
+            option.text = text;
+            selectElement.add(option);
         }
     </script>
 

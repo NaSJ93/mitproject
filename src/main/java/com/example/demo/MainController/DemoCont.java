@@ -116,8 +116,12 @@ public String login(Model model) {
 ///////////인쇄 끝////////
 
     @GetMapping("/")
-    public String dd() {
-
+    public String dd(Model m) {
+        m.addAttribute("countBA",mainserv.countBA());
+        m.addAttribute("countBS",mainserv.countBS());
+        m.addAttribute("countCB",mainserv.countCB());
+        m.addAttribute("countCM",mainserv.countCM());
+        m.addAttribute("countGF",mainserv.countGF());
         return "/tables1-1";
     }
     @GetMapping({"/tables1-3", "/tables2-3", "/tables3-1","/InvoicePrint", "PurchasePrint", "/tables2-3copy"})
@@ -314,7 +318,7 @@ public String login(Model model) {
             //java.sql.Date sqlStartDate = new java.sql.Date(dat1.getTime());
             //java.sql.Date sqlEndDate = new java.sql.Date(dat2.getTime());
 
-            productionPlans = mainserv.getProductionPlansByDateRange(dat1, dat2); //A00001,A00002,A00003....
+            productionPlans = mainserv.findByProductionComple(dat1, dat2,false); //A00001,A00002,A00003....
         }
 
 
@@ -882,6 +886,7 @@ public String login(Model model) {
             }
 
             m.addAttribute("list",list);
+
         }else{
             m.addAttribute("nothing","생산계획서에 없는 날짜입니다.");
         }

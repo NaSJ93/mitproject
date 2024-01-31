@@ -271,6 +271,19 @@ log.info("2차");
         mainserv.updateInven(itemCode,(inven.getInventory()-inputQty));
         Date now=new Date();
         mainserv.updateOutDateQuan(itemCode, now,inputQty);
+
+
+        String procode=mainserv.findProStringobyItemCode(itemCode);
+        List<PurchaseOrderSheet> purlist=mainserv.findItemInfobyProCode(procode);
+        int count=purlist.size();
+        for(int i=0;i<purlist.size();i++){
+            count-=mainserv.countOutbound(purlist.get(i).getId().getItemInfo().getItemCode());
+        }
+        log.info("다 됐냐 "+count);
+        if(count==0){ //생산계획서 완료
+            mainserv.updateCompleteByProductionPk(procode);
+            log.info("생산계획 "+procode+" 완료");
+        }
     }
 
 

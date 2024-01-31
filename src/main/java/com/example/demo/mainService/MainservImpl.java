@@ -355,6 +355,26 @@ public class MainservImpl implements Mainserv {
         inboundOutRepo.updateOutDateQuan(code,date,quantity);
     }
 
+    @Override
+    public String findProStringobyItemCode(String itemcode) {
+        return purchaseOrderRepo.findProStringobyItemCode(itemcode);
+    }
+
+    @Override
+    public int countOutbound(String itemcode) {
+        return inboundOutRepo.countOutbound(itemcode);
+    }
+
+    @Override
+    public List<PurchaseOrderSheet> findItemInfobyProCode(String procode) {
+        return purchaseOrderRepo.findItemInfobyProCode(procode);
+    }
+
+    @Override
+    public void updateCompleteByProductionPk(String procode) {
+        productionPlanRepo.updateCompleteByProductionPk(procode);
+    }
+
 
     private ProductionPlanDTO convertToDTO(ProductionPlan productionPlan) {
         ProductDTO productDTO = new ProductDTO();

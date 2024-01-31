@@ -4,6 +4,7 @@ import com.example.demo.mainDTO.ContractDTO;
 import com.example.demo.mainDTO.ItemInfoDTO;
 import com.example.demo.mainEntity.*;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -142,6 +143,10 @@ public interface Mainserv {
     //출고처리하지 않은 것들
     List<InboundOutbound> findNotStartOutbound();
     void updateOutDateQuan(String code,Date date,Long quantity);
+    String findProStringobyItemCode(String itemcode);
+    int countOutbound(String itemcode);
+    List<PurchaseOrderSheet> findItemInfobyProCode(String procode);
+    void updateCompleteByProductionPk(String procode);
 
 
 

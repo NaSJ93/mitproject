@@ -29,6 +29,10 @@ public interface PurchaseOrderRepo extends JpaRepository<PurchaseOrderSheet, Pur
     @Query(value = "select * from purchase_order_sheet where purchase_code=:purcode",nativeQuery = true)
     List<PurchaseOrderSheet> findItemInfobyPurchaseCode(String purcode);
 
+//생산번호 입력하면 해당하는 값만 출력
+    @Query(value = "select * from purchase_order_sheet where production_plan_production_pk=:procode",nativeQuery = true)
+    List<PurchaseOrderSheet> findItemInfobyProCode(String procode);
+
 //PurchaseDate 값 입력 => 발주서 발행
     @Query(value ="update purchase_order_sheet set purchase_date=:date where purchase_code=:code",nativeQuery = true)
     void startPurchase(@Param("date") Date date,@Param("code") String code);
@@ -73,7 +77,8 @@ public interface PurchaseOrderRepo extends JpaRepository<PurchaseOrderSheet, Pur
     @Query(value = "select * from purchase_order_sheet where production_plan_production_pk=:procode and item_info_item_code=:itemcode limit 1",nativeQuery = true)
     PurchaseOrderSheet findItemInfobyItemCode(String procode,String itemcode);
 
-
+    @Query(value = "select production_plan_production_pk from purchase_order_sheet where item_info_item_code=:itemcode limit 1",nativeQuery = true)
+    String findProStringobyItemCode(String itemcode);
 
 
 /*
