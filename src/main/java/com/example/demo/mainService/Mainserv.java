@@ -49,6 +49,9 @@ public interface Mainserv {
     //계약서 숫자 세기
     int countContract();
 
+    List<ItemInfo> findContractfromItem(String code);
+
+
     //계약서 저장
     Contract regiContract(ContractDTO dto,Vendor ven);
     //품목에 계약서 연동

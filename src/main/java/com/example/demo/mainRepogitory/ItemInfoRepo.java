@@ -15,10 +15,6 @@ import java.util.List;
 import java.util.Objects;
 
 public interface ItemInfoRepo extends JpaRepository<ItemInfo,String> {
-    @Transactional      //현재 작동 x
-    @Modifying
-    @Query("UPDATE ItemInfo i SET i.contract = :contract WHERE i.itemCode IN :itemCodes")
-    void updateContractForItems(@Param("contract") Contract contract, @Param("itemCodes") List<String> itemCodes);
 
 //검색용
     @Query(value = "SELECT COUNT(*) FROM item_info WHERE item_code LIKE 'BA%'",nativeQuery = true)
@@ -43,6 +39,9 @@ public interface ItemInfoRepo extends JpaRepository<ItemInfo,String> {
 
     /*@Query("select i,p from ItemInfo i join ProcurementPlan p on i.itemCode = p.itemInfo.itemCode where i.itemCode=:code")
     List<Object[]> find2(@Param("code") String code);*/
+    @Query("select i from ItemInfo i where i.contract.contractCode=:code")
+    List<ItemInfo> findContractfromItem(String code);
+
 
     @Query("select i from ItemInfo i where i.itemCode=:code")
     ItemInfo findItemCode(@Param("code") String code);
