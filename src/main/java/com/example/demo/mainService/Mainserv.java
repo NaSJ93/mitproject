@@ -3,6 +3,7 @@ package com.example.demo.mainService;
 import com.example.demo.mainDTO.ContractDTO;
 import com.example.demo.mainDTO.ItemInfoDTO;
 import com.example.demo.mainEntity.*;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
 import java.util.List;
@@ -26,6 +27,12 @@ public interface Mainserv {
     List<Medium> readMedium(); //Medium 읽어오기
     List<Large> readLarge(); // Large 읽어오기
     void regiItemInfo(ItemInfoDTO dto); //품목 등록
+//품목코드 자동생성관련
+    int countBA();
+    int countBS();
+    int countCB();
+    int countCM();
+    int countGF();
 
 //품목정보 검색(ItemCode 이용)
     ItemInfo test(String code);

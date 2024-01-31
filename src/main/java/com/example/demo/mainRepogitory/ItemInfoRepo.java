@@ -20,6 +20,19 @@ public interface ItemInfoRepo extends JpaRepository<ItemInfo,String> {
     @Query("UPDATE ItemInfo i SET i.contract = :contract WHERE i.itemCode IN :itemCodes")
     void updateContractForItems(@Param("contract") Contract contract, @Param("itemCodes") List<String> itemCodes);
 
+//검색용
+    @Query(value = "SELECT COUNT(*) FROM item_info WHERE item_code LIKE 'BA%'",nativeQuery = true)
+    int countBA();
+    @Query(value = "SELECT COUNT(*) FROM item_info WHERE item_code LIKE 'BS%'",nativeQuery = true)
+    int countBS();
+    @Query(value = "SELECT COUNT(*) FROM item_info WHERE item_code LIKE 'CB%'",nativeQuery = true)
+    int countCB();
+    @Query(value = "SELECT COUNT(*) FROM item_info WHERE item_code LIKE 'CM%'",nativeQuery = true)
+    int countCM();
+    @Query(value = "SELECT COUNT(*) FROM item_info WHERE item_code LIKE 'GF%'",nativeQuery = true)
+    int countGF();
+
+
     /*@Query("select i,p from ItemInfo i join ProcurementPlan p where i.itemCode=:code")
     List<Object[]> find2(@Param("code") String code);
 */

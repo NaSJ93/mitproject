@@ -77,6 +77,27 @@ public class MainservImpl implements Mainserv {
     }
 
     @Override
+    public int countBA() {
+        return itemInfoRepo.countBA();
+    }
+    @Override
+    public int countBS() {
+        return itemInfoRepo.countBS();
+    }
+    @Override
+    public int countCB() {
+        return itemInfoRepo.countCB();
+    }
+    @Override
+    public int countCM() {
+        return itemInfoRepo.countCM();
+    }
+    @Override
+    public int countGF() {
+        return itemInfoRepo.countGF();
+    }
+
+    @Override
     public List<ProductionPlan> getProductionPlansByDateRange(Date startDate, Date endDate) {
 
         return productionPlanRepo.findByProductionDateBetween(startDate, endDate);

@@ -66,7 +66,7 @@
 
                         <tbody class="table_Body">
                         <tr>
-                            <td class="item_Code"><input id="test" type="text" placeholder="자동생성" name="s1"></td>
+                            <td class="item_Code"><input id="itemCode" type="text" placeholder="자동생성" name="s1" readonly></td>
                             <td><input id="item_Name" type="text" placeholder="품목입력" name="s2"/></td>
                             <td><select class="Large" name="s3" id="largeSelect" onchange="filterSubCategory(); aaa(this);">
                                 <option value="0">대분류 선택</option>
@@ -130,7 +130,7 @@
                             <td th:text="${a.itemCount}"></td>
                             <td th:text="${a.drawingNumber}"></td>
                             <td><a th:download="${a.drawingNumber +'.'+a.imageType}" th:href="'data:' + ${a.imageType} + ';base64,' + ${a.drawingImage}" th:target="'_blank'">다운로드</a></td>
-                            <td th:if="${a.contract}"><a th:download="${'계약'+'.'+a.contract.imageType}" th:href="'data:' + ${a.contract.imageType} + ';base64,' + ${a.contract.ContractScan}" th:target="'_blank'"><th:block th:text="${a.contract.vendor.VendorName}"></th:block></a></td>
+                            <td th:if="${a.contract}"><a th:download="${'계약'+'.'+a.contract.imageType}" th:href="'data:' + ${a.contract.imageType} + ';base64,' + ${a.contract.ContractScan}" th:target="'_blank'"><th:block th:text="${a.contract.vendor.vendorName}"></th:block></a></td>
                         </tr>
                         </tbody>
                     </table>
@@ -139,6 +139,31 @@
         </div><!-- tab_menu 끝 -->
     </div><!-- DataTales Example 끝 -->
 
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var countBA = /*[[${countBA}]]*/ [];
+        /*]]>*/
+        /*<![CDATA[*/
+        var countBS = /*[[${countBS}]]*/ [];
+        /*]]>*/
+        /*<![CDATA[*/
+        var countCB = /*[[${countCB}]]*/ [];
+        /*]]>*/
+        /*<![CDATA[*/
+        var countCM = /*[[${countCM}]]*/ [];
+        /*]]>*/
+        /*<![CDATA[*/
+        var countGF = /*[[${countGF}]]*/ [];
+        /*]]>*/
+
+        console.log('BA',countBA);
+        console.log('BS',countBS);
+        console.log('CB',countCB);
+        console.log('CM',countCM);
+        console.log('GF',countGF);
+    </script>
 
     <script>
         //탭으로 화면 나누기 위한 자바스크립트
@@ -177,6 +202,7 @@
         // 중분류 드롭다운 초기화
         subCategoryDropdown.innerHTML = '<option value="0">중분류 선택</option>';
 
+
         // 대분류 선택 시 중분류 범위설정
         switch (largeSelect) {
             case "반도체(B)": // 반도체
@@ -201,28 +227,98 @@
         }
     </script>
 
+
     <script>
-        var a;
-        var b; //밖에다 선언
+        var large;
+        var medium;
+        var BA; var BS; var CB; var CM; var GF;
+        var itemCodeInput = document.getElementById("itemCode");
+        console.log(itemCodeInput);
 
         function aaa(code){
-        console.log(code);
-        a=$(code).val();
-        console.log(a);
+            console.log(code);
+            large=$(code).val();
+            console.log(large);
         }
-        console.log(a,"ff"); //안됨
+
 
         function bbb(code2){
-        console.log(code2);
-        b=$(code2).val();
-        console.log(a,"ff"); //됨
-        console.log(b);
+            console.log(code2);
+            medium=$(code2).val();
+            console.log(large,"와",medium); //됨
 
-        //이제 여기에 값이 들어오면 함수 또 선언해서 작업하면 될듯
+            madeCode(large, medium);
         }
 
-        console.log(b,"ff"); //안됨
+        function madeCode(large, medium){
+            var BA; var BS; var CB; var CM; var GF;
+            var itemCodeInput = document.getElementById("itemCode");
+
+            if(large == '반도체(B)' && medium == '메인보드(A)'){
+                if(countBA==0){
+                    BA='BA001';
+                }else if(countBA>0 && countBA<9){
+                    BA='BA00'+(countBA+1);
+                }else if(countBA>8 && countBA<99){
+                    BA='BA0'+(countBA+1);
+                }else{
+                    BA='BA'+(countBA+1);
+                }
+                itemCodeInput.value = BA;
+
+            }else if(large == '반도체(B)' && medium == '메모리카드(S)'){
+                if(countBS==0){
+                    BS='BS001';
+                }else if(countBS>0 && countBS<9){
+                    BS='BS00'+(countBS+1);
+                }else if(countBS>8 && countBS<99){
+                    BS='BS0'+(countBS+1);
+                }else{
+                    BS='BS'+(countBS+1);
+                }
+                itemCodeInput.value = BS;
+            }else if(large == '연결부품(C)' && medium == '브라켓(B)'){
+                if(countCB==0){
+                    CB='CB001';
+                }else if(countCB>0 && countCB<9){
+                    CB='CB00'+(countCB+1);
+                }else if(countCB>8 && countCB<99){
+                    CB='CB0'+(countCB+1);
+                }else{
+                    CB='CB'+(countCB+1);
+                }
+                itemCodeInput.value = CB;
+            }else if(large == '연결부품(C)' && medium == '나사(M)'){
+                if(countCM==0){
+                    CM='CM001';
+                }else if(countCM>0 && countCM<9){
+                    CM='CM00'+(countCM+1);
+                }else if(countCM>8 && countCM<99){
+                    CM='CM0'+(countCM+1);
+                }else{
+                    CM='CM'+(countCM+1);
+                }
+                itemCodeInput.value = CM;
+            }else if(large == '액정(G)' && medium == '플랫(F)'){
+                if(countGF==0){
+                    GF='GF001';
+                }else if(countGF>0 && countGF<9){
+                    GF='GF00'+(countGF+1);
+                }else if(countGF>8 && countGF<99){
+                    GF='GF0'+(countGF+1);
+                }else{
+                    GF='GF'+(countGF+1);
+                }
+                itemCodeInput.value = GF;
+            }
+        }
+
     </script>
+
+
+
+
+
     <!--테이블 기능구현-->
     <script src="js/item_Info.js"></script>
 

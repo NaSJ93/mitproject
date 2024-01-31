@@ -115,7 +115,14 @@ public class DemoCont {
 
 
     @GetMapping("/tables1-1") //품목정보조회 페이지
-    public void intoItems() {
+    public void intoItems(Model m) {
+
+        m.addAttribute("countBA",mainserv.countBA());
+        m.addAttribute("countBS",mainserv.countBS());
+        m.addAttribute("countCB",mainserv.countCB());
+        m.addAttribute("countCM",mainserv.countCM());
+        m.addAttribute("countGF",mainserv.countGF());
+
 
     }
 
@@ -154,9 +161,16 @@ public class DemoCont {
     @PostMapping("/tables1-1/Search")
     public String showItems(Model m) {
         log.info("조회버튼 누름  ");
-        log.info("품목정보 " + mainserv.readItemInfo());
+        List<ItemInfo> list=mainserv.readItemInfo();
 
-        m.addAttribute("s", mainserv.readItemInfo());
+        m.addAttribute("s", list);
+
+
+        m.addAttribute("countBA",mainserv.countBA());
+        m.addAttribute("countBS",mainserv.countBS());
+        m.addAttribute("countCB",mainserv.countCB());
+        m.addAttribute("countCM",mainserv.countCM());
+        m.addAttribute("countGF",mainserv.countGF());
         return "/tables1-1";
     }
 
