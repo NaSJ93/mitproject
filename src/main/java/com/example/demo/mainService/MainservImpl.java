@@ -1,9 +1,6 @@
 package com.example.demo.mainService;
 
-import com.example.demo.mainDTO.ContractDTO;
-import com.example.demo.mainDTO.ItemInfoDTO;
-import com.example.demo.mainDTO.ProductDTO;
-import com.example.demo.mainDTO.ProductionPlanDTO;
+import com.example.demo.mainDTO.*;
 import com.example.demo.mainEntity.*;
 import com.example.demo.mainEntity.PurchaseOrderSheetId;
 import com.example.demo.mainRepogitory.*;
@@ -32,6 +29,8 @@ public class MainservImpl implements Mainserv {
     private final InboundOutRepo inboundOutRepo;
     private final MemberRepository memberRepository;
   //  private final InspectionDateRepo inspectionDateRepo;
+
+    private final ProductRepo productRepo;
 
   /*  @Override
     public List<ItemInfoDTO> aaa(ItemInfo entity) {
@@ -395,4 +394,79 @@ public class MainservImpl implements Mainserv {
 
         return itemInfoRepo.findAll();
     }*/
+////////////////거래처관리,생산계획관리 추가 시작 /////////////////////////
+
+
+    @Override   // 수정 버튼 누르면 해당 버튼의 열의 데이터를 읽음
+    public void findRowDataByButton(VendorDTO vendorDTO) {
+        VendorDTO rowData = new VendorDTO();
+        rowData.setBusinessLicense(vendorDTO.getBusinessLicense());
+        rowData.setVendorName(vendorDTO.getVendorName());
+        rowData.setVendorAddress(vendorDTO.getVendorAddress());
+        rowData.setVendorPnumber(vendorDTO.getVendorPnumber());
+        rowData.setVendorEmail(vendorDTO.getVendorEmail());
+        rowData.setPIC(vendorDTO.getVendorEmail());
+    }
+
+
+    @Override
+    public void SaveProduction(ProductionPlanToEntityDTO productionPlanToEntityDTO) {
+        productionPlanRepo.save(ProductionPlan.builder()
+                .productionPk(productionPlanToEntityDTO.getProductionPk())
+                .productionQuantity(productionPlanToEntityDTO.getProductionQuantity())
+                .productionDate(productionPlanToEntityDTO.getProductionDate())
+                .product(new Product(productionPlanToEntityDTO.getProduct().getProductCode(), productionPlanToEntityDTO.getProductionPk()))
+                .complete(productionPlanToEntityDTO.getComplete())
+                .build());
+
+    }
+
+    //거래처 등록/저장
+    @Override
+    public void RegisterVendor(VendorDTO vendorDTO) {
+
+        //VendorRepo 를 통해서 DB에 저장
+        vendorRepo.save(Vendor.builder()
+                .businessLicense(vendorDTO.getBusinessLicense())
+                .vendorName(vendorDTO.getVendorName())
+                .vendorAddress(vendorDTO.getVendorAddress())
+                .vendorPnumber(vendorDTO.getVendorPnumber())
+                .vendorEmail(vendorDTO.getVendorEmail())
+                .vendorEmail(vendorDTO.getVendorEmail())
+                .PIC(vendorDTO.getPIC())
+                .build());
+    }
+
+    @Override //리포짓토리에서 바로 구현 A1 DB에서 출력
+    public List<ProductionPlan> ShowProductionPlanList() {
+        return productionPlanRepo.findAll();
+    }
+
+    @Override//DB에서 출력
+    public List<Vendor> ShowVendorList() {
+        return vendorRepo.findAll();
+    }
+
+    @Override
+    public List<Product> ProductList() {
+        //제품 리스트 불러오는 메소드
+        return productRepo.findAll();
+    }
+
+
+    //계획 삭제
+    @Override
+    public void removePlan(String productionPk) {
+        productionPlanRepo.deleteById(productionPk);
+
+    }
+
+    //거래처 삭제
+    @Override
+    public void removeVendor(String businessLicense) {
+        vendorRepo.deleteById(businessLicense);
+
+    }
+////////////////거래처관리,생산계획관리 추가 끝 /////////////////////////
+
 }

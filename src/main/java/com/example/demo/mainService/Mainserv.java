@@ -2,6 +2,8 @@ package com.example.demo.mainService;
 
 import com.example.demo.mainDTO.ContractDTO;
 import com.example.demo.mainDTO.ItemInfoDTO;
+import com.example.demo.mainDTO.ProductionPlanToEntityDTO;
+import com.example.demo.mainDTO.VendorDTO;
 import com.example.demo.mainEntity.*;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -201,5 +203,31 @@ public interface Mainserv {
                 vendor(ven).
                 build();
     }
+////////////////거래처관리,생산계획관리 추가 시작 /////////////////////////
+    // 수정 버튼 누르면 해당 버튼의 열의 데이터를 읽음
+    void findRowDataByButton(VendorDTO vendorDTO);
+
+    void SaveProduction(ProductionPlanToEntityDTO productionPlanToEntityDTO);
+
+    //거래처 등록/저장
+    void RegisterVendor(VendorDTO vendorDTO);
+
+    // 수정 버튼 누르면 해당 버튼의 열의 데이터를 읽음
+
+    //리포짓토리에서 바로 구현 A1 DB에서 출력
+    List<ProductionPlan> ShowProductionPlanList();
+
+    //DB에서 출력
+    List<Vendor> ShowVendorList();
+
+    List<Product> ProductList();
+
+    //계획 삭제
+    void removePlan(String productionPk);
+
+    //거래처 삭제
+    void removeVendor(String businessLicense);
+    ////////////////거래처관리,생산계획관리 추가 끝 /////////////////////////
+
 
 }

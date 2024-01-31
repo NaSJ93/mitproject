@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        table {
+            border-collapse: collapse; /* 테이블 테두리를 합치기 */
+            width: 80%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd; /* 테두리 두께 설정 */
+            text-align: center; /* 셀 내용을 중앙 정렬 */
+            padding: 8px; /* 셀 안의 여백 설정 */
+        }
+    </style>
+
+
+    <title>거래처 관리</title>
+
+
+</head>
+<body>
+
+<h1>거래처 관리</h1>
+
+
+<h2>거래처 등록하기</h2>
+<form action="/registerVendor" method="post" th:object="${vendorDTO}">
+    <label for="businessLicense">사업자 번호: </label>
+    <input type="text" id="businessLicense" th:field="*{businessLicense}" required>
+    <br>
+    <label for="vendorName">거래처 이름: </label>
+    <input type="text" id="vendorName" th:field="*{vendorName}" required>
+    <br>
+    <label for="vendorAddress">거래처 주소: </label>
+    <input type="text" id="vendorAddress" th:field="*{vendorAddress}" required>
+    <br>
+    <label for="vendorPnumber">거래처 전화번호: </label>
+    <input type="text" id="vendorPnumber" th:field="*{vendorPnumber}" required>
+    <br>
+    <label for="vendorEmail">거래처 이메일: </label>
+    <input type="text" id="vendorEmail" th:field="*{vendorEmail}" required>
+    <br>
+    <label for="PIC">거래처 담당자: </label>
+    <input type="text" id="PIC" th:field="*{PIC}" required>
+    <br>
+
+
+    <br>
+    <button type="submit">거래처 등록/수정</button>
+</form>
+
+
+<h2>거래처 목록</h2>
+<br>
+
+<table id="tableVendorList">
+    <tr>
+        <thead>
+        <th>사업자 번호</th>
+        <th>거래처 이름</th>
+        <th>거래처 주소</th>
+        <th>거래처 전화번호</th>
+        <th>거래처 이메일</th>
+        <th>담당자</th>
+        <th>삭제</th>
+        <th>수정</th>
+        </thead>
+    </tr>
+    <tbody>
+    <tr th:each="showVendor : ${showVendorList}">
+        <!--        사업자    번호 출력-->
+        <td th:if="${showVendor.businessLicense != null}" th:text="${showVendor.businessLicense}"></td>
+        <!--거래처 이름 출력-->
+        <td th:text="${showVendor.vendorName}"></td>
+        <!--거래처 주소 출력-->
+        <td th:text="${showVendor.vendorAddress}"></td>
+        <!--거래처 전화번호 출력-->
+        <td th:text="${showVendor.vendorPnumber}"></td>
+        <!--        거래처 이메일-->
+        <td th:text="${showVendor.vendorEmail}"></td>
+        <!--        거래담당자 -->
+        <td th:text="${showVendor.PIC}"></td>
+
+        <!--        삭제 버튼-->
+        <form th:action="@{/requestDeleteVendor}" method="post">
+            <!--            hidden은 안보임 처리용으로 동작하는거-->
+            <input type="hidden" name="businessLicense" th:value="${showVendor.businessLicense}"/>
+            <td>
+                <button type="submit">삭제</button>
+            </td>
+        </form>
+
+        <!-- 수정 버튼 -->
+        <form>
+            <input type="hidden" name="businessLicense"/>
+            <td>
+                <button onclick="getData(this)" type="button"> 수정</button>
+            </td>
+        </form>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    function getData(btn){
+    var row = btn.parentNode.parentNode;//버튼이 속한 행
+    var cells = row.getElementsByTagName("td");
+    var rowData = {};
+
+// 각 행의 셀(td)에 대해 반복
+    for (var j = 0; j < cells.length; j++) {
+        var headerCell = document.querySelector("#tableVendorList th:nth-child(" + (j+1) + ")");
+        var headerText = headerCell.innerText;
+        var cell = cells[j];
+        rowData[headerText] = cell.innerText; //해당 열의 데이터를 rowData 객체에 추가
+    }
+    console.log(rowData);
+
+document.getElementById("businessLicense").value = rowData["사업자 번호"];
+document.getElementById("vendorName").value = rowData["거래처 이름"];
+document.getElementById("vendorAddress").value = rowData["거래처 주소"];
+document.getElementById("vendorPnumber").value = rowData["거래처 전화번호"];
+document.getElementById("vendorEmail").value = rowData["거래처 이메일"];
+document.getElementById("PIC").value = rowData["담당자"];
+
+    }
+
+
+</script>
+</body>
+</html>
