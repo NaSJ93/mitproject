@@ -17,7 +17,8 @@ public interface ProcurementPlanRepo extends JpaRepository<ProcurementPlan, Proc
 
 //생산계획코드로 검색해서 저장되어 있는것만 출력
     List<ProcurementPlan> findById_ProductionPlan_ProductionPk(String productionPlanProductionPk);
-
+//품목코드로 검색해서 저장되어 있는것만 출력
+    List<ProcurementPlan> findById_ItemInfo_ItemCode(String itemInfoItemCode);
 
     @Modifying
     @Query(value = "INSERT INTO procurement_plan (procurement_date, procurement_quantity, production_plan_production_pk,item_info_item_code) VALUES (:date,:quantity,:procode,:itemcode)", nativeQuery = true)

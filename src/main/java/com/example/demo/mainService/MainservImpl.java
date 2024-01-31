@@ -50,6 +50,10 @@ public class MainservImpl implements Mainserv {
     public List<ProcurementPlan> findById_ProductionPlan_ProductionPk(String productionPlanProductionPk) {
         return procurementPlanRepo.findById_ProductionPlan_ProductionPk(productionPlanProductionPk);
     }
+    @Override
+    public List<ProcurementPlan> findById_ItemInfo_ItemCode(String itemInfoItemCode){
+        return procurementPlanRepo.findById_ItemInfo_ItemCode(itemInfoItemCode);
+    }
 
 
     @Override

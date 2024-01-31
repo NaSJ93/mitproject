@@ -657,11 +657,13 @@ public class DemoCont {
                     List<String> bb = new ArrayList<>(); //(진척 + 입고x 품목 저장)
                     List<String> pp = new ArrayList<>(); //(           발주서 코드 저장)
                     List<String> pro= new ArrayList<>(); //(            생산계획 코드 저장)
+                    List<Long> proquant=new ArrayList<>();
                     for (int i = 0; i < ccc.size(); i++) {        //a1,a2...(입고 안된 품목 저장된거 )
                         if (mainserv.findbyItemCodeAndInisNull(ccc.get(i).getId().getItemInfo().getItemCode()) != null) { //null이 아님 => 입고 안된거
                             bb.add(mainserv.findbyItemCodeAndInisNull(ccc.get(i).getId().getItemInfo().getItemCode()).getItemInfo().getItemCode());
                             pp.add(ccc.get(i).getId().getPurchaseCode());
                             pro.add(ccc.get(i).getId().getProductionPlan().getProductionPk());
+                           //proquant.add((ccc.get(i).))
                             log.info(mainserv.findbyItemCodeAndInisNull(ccc.get(i).getId().getItemInfo().getItemCode()).getItemInfo().getItemCode() + " sdsd");
                         }
                     }
@@ -678,7 +680,7 @@ public class DemoCont {
                             changeInbounds.add(ChangeInbound.builder().purchaseCode(pp.get(i)).
                                     itemCode(mainserv.test(bb.get(i)).getItemCode()).
                                     itemName(xx.getItemName()).
-                                    quantity(xx.getItemCount()).
+                                    quantity(mainserv.findById_ItemInfo_ItemCode(xx.getItemCode()).get(0).getProcurementQuantity()).
                                     inventory(xx.getInventory()).
                                     ProcurementDate(mainserv.findItemfromProcurement(pro.get(i), bb.get(i)).getProcurementDate()).build());
 
