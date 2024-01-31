@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        table {
+            border-collapse: collapse; /* 테이블 테두리를 합치기 */
+            width: 50%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd; /* 테두리 두께 설정 */
+            text-align: center; /* 셀 내용을 중앙 정렬 */
+            padding: 8px; /* 셀 안의 여백 설정 */
+        }
+    </style>
+
+
+    <title>생산계획 관리</title>
+
+
+</head>
+<body>
+
+<h1>생산계획관리</h1>
+
+
+<h2>생산계획 등록하기</h2>
+
+<form id="saveTable" action="/saveProduct" method="post" th:object="${productionPlanToEntityDTO}">
+
+    생산계획 번호 : <input type="text" id="productionPk" name="productionPk" th:field="*{productionPk}" >
+    <label for="productionDate">생산 예정일:</label>
+    <input type="date" id="productionDate" th:field="*{productionDate}" required>
+    <br>
+    <label for="product">제품명:</label>
+    <select name="product" id="product" th:field="*{product}">
+        <option th:each="product:${productList}"
+                th:value="${product.productCode}"
+                th:text="${product.productName}">
+        </option>
+    </select>
+
+    <label for="productionQuantity">생산 수량:</label>
+    <input type="number" id="productionQuantity" th:field="*{productionQuantity}" required>
+    <br>
+
+    <br>
+    <button type="submit">계획 등록/수정</button>
+
+</form>
+
+
+<h2>생산계획 목록</h2>
+<br>
+
+<table>
+    <tr>
+        <th>생산계획번호</th>
+        <th>생산 예정일</th>
+        <th>생산 제품</th>
+        <th>생산 개수</th>
+        <th>삭제</th>
+        <th>수정</th>
+    </tr>
+    <tr th:each="showPlanList:${showProductionPlanList}">
+        <td th:if="${showPlanList.productionPk != null}" th:text="${showPlanList.productionPk}"></td>
+
+        <td th:text="${#dates.format(showPlanList.productionDate,'yyyy-MM-dd')}"></td>
+
+        <td th:text="${showPlanList.product.productName}"></td>
+
+        <td th:text="${showPlanList.productionQuantity}"></td>
+
+        <!--        삭제 버튼-->
+        <form th:action="@{/requestDelete}" method="post">
+            <input type="hidden" name="productionPk" th:value="${showPlanList.productionPk}"/>
+            <td>
+                <button type="submit">삭제</button>
+            </td>
+        </form>
+        <!--        수정버튼-->
+        <form>
+            <input type="hidden" name=""/>
+            <td>
+                <button onclick="getData(this)" type="button"> 수정</button>
+            </td>
+        </form>
+    </tr>
+</table>
+
+
+<script>
+    function getData(btn) {
+        var row = btn.parentNode.parentNode; // 수정 버튼이 속한 행
+        var cells = row.getElementsByTagName("td"); // 행의 모든 셀
+
+        // 각 셀의 값 가져오기
+        var productionPk = cells[0].innerText.trim(); // 번호
+        var productionDate = cells[1].innerText.trim(); // 생산 예정일
+        var product = cells[2].innerText.trim(); // 생산 제품
+        var productionQuantity = cells[3].innerText.trim(); // 생산 개수
+
+        // 입력란에 값 설정
+        document.getElementById("productionPk").value = productionPk;
+        document.getElementById("productionDate").value = productionDate;
+
+        // product select 설정
+        var productSelect = document.getElementById("product");
+        for (var i = 0; i < productSelect.options.length; i++) {
+            if (productSelect.options[i].text === product) {
+                productSelect.selectedIndex = i;
+                break;
+            }
+        }
+
+        document.getElementById("productionQuantity").value = productionQuantity;
+
+        // 폼 서브밋
+        console.log(productionPk, productionDate, product, productionQuantity);
+    }
+</script>
+
+</body>
+</html>
