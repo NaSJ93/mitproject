@@ -104,12 +104,14 @@ log.info("2차");
             MimeMessage message = new MimeMessage(session); log.info("2-1차");
             message.setFrom(new InternetAddress(email));    log.info("2-2차");        //수신자메일주소
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email)); log.info("2-3차");
-
-            // Subject
-            message.setSubject("제목을 입력하세요"); //메일 제목을 입력
+            if(type.equals("purchase")) {    //발주서 관련 처리
+                message.setSubject(code+" 발주서 발송했습니다."); //메일 제목을 입력
+            }else{                            //명세서 관련 처리
+                message.setSubject(code+" 명세서 발송했습니다."); //메일 제목을 입력
+            }
 
             // Text
-            message.setText("내용을 입력하세요");    //메일 내용을 입력
+            message.setText("첨부파일 확인 바랍니다.");    //메일 내용을 입력
 
             // 파일 첨부
             MimeBodyPart attachmentPart = new MimeBodyPart();

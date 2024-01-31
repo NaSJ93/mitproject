@@ -669,11 +669,13 @@ public String login(Model model) {
                     List<String> bb = new ArrayList<>(); //(진척 + 입고x 품목 저장)
                     List<String> pp = new ArrayList<>(); //(           발주서 코드 저장)
                     List<String> pro= new ArrayList<>(); //(            생산계획 코드 저장)
+                    List<Long> proquant=new ArrayList<>();
                     for (int i = 0; i < ccc.size(); i++) {        //a1,a2...(입고 안된 품목 저장된거 )
                         if (mainserv.findbyItemCodeAndInisNull(ccc.get(i).getId().getItemInfo().getItemCode()) != null) { //null이 아님 => 입고 안된거
                             bb.add(mainserv.findbyItemCodeAndInisNull(ccc.get(i).getId().getItemInfo().getItemCode()).getItemInfo().getItemCode());
                             pp.add(ccc.get(i).getId().getPurchaseCode());
                             pro.add(ccc.get(i).getId().getProductionPlan().getProductionPk());
+                           //proquant.add((ccc.get(i).))
                             log.info(mainserv.findbyItemCodeAndInisNull(ccc.get(i).getId().getItemInfo().getItemCode()).getItemInfo().getItemCode() + " sdsd");
                         }
                     }
@@ -690,7 +692,7 @@ public String login(Model model) {
                             changeInbounds.add(ChangeInbound.builder().purchaseCode(pp.get(i)).
                                     itemCode(mainserv.test(bb.get(i)).getItemCode()).
                                     itemName(xx.getItemName()).
-                                    quantity(xx.getItemCount()).
+                                    quantity(mainserv.findById_ItemInfo_ItemCode(xx.getItemCode()).get(0).getProcurementQuantity()).
                                     inventory(xx.getInventory()).
                                     ProcurementDate(mainserv.findItemfromProcurement(pro.get(i), bb.get(i)).getProcurementDate()).build());
 
@@ -845,10 +847,10 @@ public String login(Model model) {
 
 
             List<InboundOutbound> outbounds = mainserv.findNotStartOutbound(); //입고 마감 및 출고 x 품목들 a1, a2....
-            //List<ChangeProcurement> pro = new ArrayList<>(); //필요한가?
             List<ChangeOutbound> out = new ArrayList<>();
-            List<ProcurementPlan> pro = new ArrayList<>(); //생산계획서에 해당하는 품목 저장
+            List<ProcurementPlan> pro; //생산계획서에 해당하는 품목 저장
             List<String> outItems =new ArrayList<>();
+            List<Long> proQuan=new ArrayList<>();
             List<Date> proDate =new ArrayList<>();
             for (int j = 0; j < productionPlans.size(); j++) {
                 pro=mainserv.findById_ProductionPlan_ProductionPk(productionPlans.get(j).getProductionPk()); //생산계획서에 해당하는 품목 출력
@@ -856,6 +858,7 @@ public String login(Model model) {
                     for(int k=0;k<outbounds.size();k++){
                         if(pro.get(i).getId().getItemInfo().getItemCode().equals(outbounds.get(k).getItemInfo().getItemCode())){
                             outItems.add(outbounds.get(k).getItemInfo().getItemCode());
+                            proQuan.add(pro.get(j).getProcurementQuantity());
                             proDate.add(productionPlans.get(j).getProductionDate());
                         }
 
@@ -872,7 +875,7 @@ public String login(Model model) {
                 list.add(ChangeOutbound.builder().
                         itemCode(itemInfos.get(i).getItemCode()).
                         itemName(itemInfos.get(i).getItemName()).
-                        itemCount(itemInfos.get(i).getItemCount()).
+                        itemCount(proQuan.get(i)).
                         productionDate(proDate.get(i)).
                         inventory(itemInfos.get(i).getInventory())
                         .build());

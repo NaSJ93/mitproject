@@ -110,9 +110,7 @@
                             <th>품목코드</th>
                             <th>품목명</th>
                             <th>규격</th>
-                            <th>진척도</th>
                             <th>입고예정일</th>
-                            <th>진척검수</th>
                             <th>거래처</th>
                             <th>담당자메일</th>
                             <th>진척검수</th>
@@ -126,9 +124,7 @@
                                 <td th:text="${b.itemCode}">BA001</td>
                                 <td th:text="${b.itemName}">메인보드1호</td>
                                 <td th:text="${b.texture}">7*15*1</td>
-                                <td><img src="/진척도.jpg"></td>
                                 <td th:text="${#dates.format(b.procurementDate,'yyyy-MM-dd')}">2024-01-10</td>
-                                <td>진행중</td>
                                 <td th:text="${b.vendorName}">(주) 제이아이테크</td>
                                 <td th:text="${b.vendorEmail}">a1234@gmail.com</td>
                                 <td th:if="${innerIterStat.index == 0}">

@@ -18,6 +18,7 @@ public interface Mainserv {
 
 
     List<ProcurementPlan> findById_ProductionPlan_ProductionPk(String productionPlanProductionPk);
+    List<ProcurementPlan> findById_ItemInfo_ItemCode(String itemInfoItemCode);
 
 
 
