@@ -9,8 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
+
 public interface MemberRepository extends JpaRepository<Member,String> {  //<Entity클래스명,Entity클래스의 ID 타입>
 
 
-List<Member> findAll(); //Member 엔티티 ID모두 조회해서 Member 리스트에 저장 사용하는 클래스 >>MemberTests,MyUserDetailService
 }

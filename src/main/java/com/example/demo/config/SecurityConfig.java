@@ -41,20 +41,28 @@ public class SecurityConfig {
                 .csrf((csrf) -> csrf.disable())   //csrf 크로스 뭐시기 공격을 방지하는 보안을 끄는 작업 내부에서만 돌릴거면 상관 x
                 //authorizeRequests : Url에 따른 페이지에 대한 권한을 부여하기 위해 시작하는 메소드
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-                        .requestMatchers("/login", "/logout").permitAll() //괄호 안의 URL 접근은 권한없어도 ok
-                        .anyRequest().hasAnyRole("ADMIN","MEMBER")  //그 외의 접근은 "ADMIN","MEMBER"가 있어야 합니다. (없으면 로그인창 )
+                                .requestMatchers("/login/**","/css/**","/img/**").permitAll() //괄호 안의 URL 접근은 권한없어도 ok
+                                .requestMatchers("/admin/**").hasRole("ADMIN")//어드민은 회원 관리만 가능합니다.
+                                .anyRequest().hasRole("MEMBER")  //그 외의 접근은 작업관련이기에 "MEMBER"만 접근 가능
+//                        .anyRequest().hasAnyRole("ADMIN", "MEMBER")  //그 외의 접근은 "ADMIN","MEMBER"가 있어야 합니다. (없으면 로그인창 )
                 )
                 //기본제공 로그인 폼 설정
-                .formLogin(withDefaults())
-        //기본제공 로그아웃 폼  로그아웃은 미구현!
+                .formLogin((formLogin) -> formLogin
+                        .usernameParameter("username")
+                        .passwordParameter("password")
+                        .defaultSuccessUrl("/")
+                        .loginPage("/login")
+                )
+                //기본제공 로그아웃 폼  로그아웃은 미구현!
                 .logout(withDefaults())
                 //세션 설정
-                .sessionManagement((sessionManagement) ->sessionManagement
-                .sessionConcurrency((sessionConcurrency) ->sessionConcurrency
-                .maximumSessions(1)
-                .expiredUrl("/login?expired")
-                                ));
+                .sessionManagement((sessionManagement) -> sessionManagement
+                        .sessionConcurrency((sessionConcurrency) -> sessionConcurrency
+                                .maximumSessions(1)
+                                .expiredUrl("/login?expired")
+                        ));
         return http.build();
     }
 }
+
 

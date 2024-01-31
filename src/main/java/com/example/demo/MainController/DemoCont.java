@@ -1,6 +1,7 @@
 package com.example.demo.MainController;
 
 import com.example.demo.changeList.*;
+import com.example.demo.dto.AuthMemberDTO;
 import com.example.demo.mainDTO.*;
 import com.example.demo.mainEntity.*;
 import com.example.demo.mainService.InventoryReportService;
@@ -8,6 +9,7 @@ import com.example.demo.mainService.Mainserv;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,11 +33,21 @@ public class DemoCont {
 
 ///////////////////여기부터 로그인 맵핑
     // 로그인 페이지
-    @GetMapping("/login")
-    public void login(){  }
+@GetMapping("/login")
+public String login(Model model) {
+    System.out.println("로그인 진입Get");
+    model.addAttribute("memberDTO",
+            new AuthMemberDTO("username",
+                    "password",
+                    List.of(new SimpleGrantedAuthority("ROLE_USER"))) //AuthoDTO에는 인가 관련 메서드가 컬렉션 타입 그런List.of로 불러옴
+    );
+    return "/login";
+}
     @PostMapping("/login")
-    public String login_Get() {
-        return "login";
+    public String loginProcess(AuthMemberDTO authMemberDTO){
+        //여기서 로그인 처리를 수행
+        //성공 시 리다이렉트를 할 경로를 반환
+        return "/index";
     }
     @GetMapping("/logout")
     public void logout(){   }

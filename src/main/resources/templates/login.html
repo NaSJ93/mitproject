@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/login.css">
+    <title>Login Page</title>
+</head>
+<body>
+<div class="container">
+    <div class="logo">
+        <a href="/admin"> <img src="/img/undraw_rocket.svg" alt="Company Mascot"></a>
+    </div>
+
+    <div>
+        <form th:action="@{/login}" method="post" th:object="${memberDTO}">
+            <fieldset>
+                <legend>Please Login</legend>
+                <p>
+                    <label> I.D   </label>
+                    <input type="text" id="username" th:field="*{username}" required/>
+                </p>
+
+                <p>
+                    <label> P.W  </label>
+                    <input type="password" id="password" th:field="*{password}" required/>
+                </p>
+
+
+                <div>
+                    <button type="submit" class="btn">로그인</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

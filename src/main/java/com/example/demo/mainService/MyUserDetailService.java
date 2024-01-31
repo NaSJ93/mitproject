@@ -1,8 +1,8 @@
 package com.example.demo.mainService;
 
-import com.example.demo.dto.AuthMemberDTO;
-import com.example.demo.mainEntity.Member;
+import  com.example.demo.mainEntity.Member;
 import com.example.demo.mainRepogitory.MemberRepository;
+import com.example.demo.dto.AuthMemberDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -34,28 +34,24 @@ public class MyUserDetailService implements UserDetailsService {
         log.info("MyUserDetailService loadUserByUsername" + username); //예외처리시 로그출력
 
 
-        List<Member> result = memberRepository.findAll(); //리포짓토리에서 전부 불러온 회원목록
-        //사용자가 입력한 username에 해당하는  Member를 찾습니다
-       Optional<Member> optionalMember = result.stream()
-               .filter(member->member.getId().equals(username))
-               .findFirst();
-        log.info("================================");
-
-        Member member = optionalMember.orElseThrow(()-> new UsernameNotFoundException("사용자를 찾을 수 없습니다. "+username));
+        Optional<Member> optionalMember = memberRepository.findById(username);
+        Member member = optionalMember.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다. " + username));
 
         AuthMemberDTO authMemberDTO = new AuthMemberDTO(
                 member.getId(),
                 member.getPassword(),
                 member.getRoleSet()
                         .stream()
-                        //MemberRole은 스프링시큐리티의 SimpleGrantedAuthority로 변환 
-                        //이때 'ROLE_' 접두사 추가해서 사용 로그창에  >>"ROLE_ADMIN "
                         .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
                         .collect(Collectors.toSet())
         );
+        log.info("MyUserDetailService loadUserByUsername: " + username);
 
-        authMemberDTO.setId(authMemberDTO.getId());
-        authMemberDTO.setPassword(authMemberDTO.getPassword());
+
+
+        log.info("Found user: " + member.getId());
+
+
 
         return authMemberDTO;
 

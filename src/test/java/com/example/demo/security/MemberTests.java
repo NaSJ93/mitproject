@@ -22,10 +22,10 @@ public class MemberTests {
     @Test   //필수 2
     public void insertDummies() { //더미데이터 넣는 코드 작성
         Member member = Member.builder()  //Member.builder()의 항목별 내용 작성하기 (빌더로)
-                .id("1")
-                .password(passwordEncoder.encode("1"))
+                .id("ADMIN")
+                .password(passwordEncoder.encode("ADMIN"))
                 .build();
-        member.addMemberRole(MemberRole.MEMBER);
+        member.addMemberRole(MemberRole.ADMIN);
         repository.save(member); //위 내용을 member 테이블에 저장
 
 
