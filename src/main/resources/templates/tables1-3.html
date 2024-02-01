@@ -13,7 +13,7 @@
          outline: none;
      }
     </style>
-    <title>조달계획등록</title>
+    <title>조달관리1-3</title>
     <!-- Custom styles for this page -->
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <!-- 조달계획등록 css -->
@@ -28,6 +28,7 @@
         <div class="card-body">
             <div class="table-responsive">
                 <br>
+                <button class="btn btn-primary btn-icon-split" id="printbtn" ><span class="text">생산계획목록 보기</span></button>
                 <form action="tables1-3" method="post">
                     <label for="fromDate">시작 날짜:</label>
                     <input type="date" id="fromDate" name="fromDate">
@@ -132,6 +133,19 @@
             alert(alertMessage);
         }
     </script>
+
+    <script>
+        console.log("1");
+        $(document).ready(function() {
+        console.log("2");
+            $("#printbtn").on('click', function() {
+                let popOption = "width=1000,height=700,top=300,left=300,scrollbars=yes";
+                let popUrl = '/ProductionPlan';
+                let newWindow = window.open(popUrl, 'pop', popOption);
+            });
+        });
+    </script>
+
 
     <!-- 조달계획목록 자바스크립트     -->
     <script src="js/procurement_plan.js"></script>

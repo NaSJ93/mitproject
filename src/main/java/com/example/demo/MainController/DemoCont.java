@@ -115,6 +115,9 @@ public String login(Model model) {
     }
 ///////////인쇄 끝////////
 
+
+//////////////////
+
     @GetMapping("/")
     public String dd(Model m) {
         m.addAttribute("countBA",mainserv.countBA());
@@ -277,31 +280,33 @@ public String login(Model model) {
 
         m.addAttribute("contractSearch", mainserv.findVendorAll());
         List<Contract> contractSearchDate = mainserv.findByContactDateBetween(dat1, dat2);
-        List<ItemInfo> contractItems = mainserv.findContractIsNotNull();
-        log.info(contractItems.get(0).getItemCode());
+        List<ItemInfo> contractItems;
 
         log.info("선택된 시작 일  :  " + dat1);
         log.info("선택된 끝 일 : " + dat2);
         List<ChangeContractSearch> serches = new ArrayList<>();
+        Map<String,List<ChangeContractSearch>> map=new HashMap<>();
         for (int i = 0; i < contractSearchDate.size(); i++) {
-            //log.info("검색된 계약번호 : " + contract.getContractCode());
-            serches.add(ChangeContractSearch
-                    .builder()
-                    .contractCode(contractItems.get(i).getContract().getContractCode())
-                    .vendorName(contractSearchDate.get(i).getVendor().getVendorName())
-                    .businessLicense(contractItems.get(i).getContract().getVendor().getBusinessLicense())
-                    .contractdate(contractItems.get(i).getContract().getContractDate())
-                    .itemname(contractItems.get(i).getItemName())
-                    .contractScan(contractSearchDate.get(i).getContractScan())
-                    .imageType(contractItems.get(i).getImageType())
-
-                    .build());
-//        log.info("나오나?" + contractItems);
+            contractItems=mainserv.findContractfromItem(contractSearchDate.get(i).getContractCode());
+            for(int j=0;j<contractItems.size();j++) {
+                serches.add(ChangeContractSearch
+                        .builder()
+                        .contractCode(contractItems.get(j).getContract().getContractCode())
+                        .vendorName(contractSearchDate.get(i).getVendor().getVendorName())
+                        .businessLicense(contractItems.get(j).getContract().getVendor().getBusinessLicense())
+                        .contractdate(contractItems.get(j).getContract().getContractDate())
+                        .itemname(contractItems.get(j).getItemName())
+                        .contractScan(contractSearchDate.get(i).getContractScan())
+                        .imageType(contractItems.get(j).getImageType())
+                        .build());
+            }
+            map.put(contractSearchDate.get(i).getContractCode(),new ArrayList<>(serches));
+            serches.clear();
         }
-        log.info(serches + "kkkk");
+        log.info(map + "kkkk");
 
         //검색결과를 모델에 추가
-        m.addAttribute("contract", serches);
+        m.addAttribute("contract", map);
         m.addAttribute("vendor",mainserv.findVendorAll());
         return "/tables1-2";
     }

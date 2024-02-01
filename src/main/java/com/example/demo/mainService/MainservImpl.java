@@ -113,6 +113,11 @@ public class MainservImpl implements Mainserv {
     }
 
     @Override
+    public List<ItemInfo> findContractfromItem(String code) {
+        return itemInfoRepo.findContractfromItem(code);
+    }
+
+    @Override
     public Contract regiContract(ContractDTO dto,Vendor ven) {
         contractRepo.save(toContract(dto,ven));
         return contractRepo.findById(dto.getContractCode()).get();
