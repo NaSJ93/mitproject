@@ -31,6 +31,13 @@ public class DemoCont {
     private Mainserv mainserv;
     private InventoryReportService inventoryReportService;
 
+    //더미데이터
+    @GetMapping("/test")
+    public String dummy(){
+        mainserv.dummy();
+        return "/tables1-1";
+    }
+
 ///////////////////여기부터 로그인 맵핑
     // 로그인 페이지
 @GetMapping("/login")

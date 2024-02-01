@@ -44,6 +44,41 @@ public class MainservImpl implements Mainserv {
         return procurementPlanRepo.find(procode,itemcode);
     }
 
+    @Override
+    public void dummy() {
+        //제품정보
+        productRepo.save(Product.builder().ProductCode("G1").ProductName("갤럭시").build());
+
+        //대,중
+        largeRepo.save(Large.builder().itemCodeLarge("반도체(B)").build());
+        largeRepo.save(Large.builder().itemCodeLarge("연결부품(C)").build());
+        largeRepo.save(Large.builder().itemCodeLarge("액정(G)").build());
+
+        mediumRepo.save(Medium.builder().ItemCodeMedium("메인보드(A)").large(new Large("반도체(B)")).build());
+        mediumRepo.save(Medium.builder().ItemCodeMedium("메모리카드(S)").large(new Large("반도체(B)")).build());
+        mediumRepo.save(Medium.builder().ItemCodeMedium("브라켓(B)").large(new Large("연결부품(C)")).build());
+        mediumRepo.save(Medium.builder().ItemCodeMedium("나사(M)").large(new Large("연결부품(C)")).build());
+        mediumRepo.save(Medium.builder().ItemCodeMedium("플랫(F)").large(new Large("액정(G)")).build());
+
+        vendorRepo.save(Vendor.builder().businessLicense("401-81-53863").vendorName("(주) 제이아이테크").vendorAddress("전라북도 군산시 중가도길 16 (우)54002").vendorPnumber("063-731-0088").vendorEmail("sp@ji-tech.co.kr").PIC("함석헌").build());
+        vendorRepo.save(Vendor.builder().businessLicense("607-81-82587").vendorName("(주)대명").vendorAddress("창원시 마산회원구 자유무역4길 6").vendorPnumber("055-256-1188").vendorEmail("daemyung@krparachute.co.kr").PIC("손순자").build());
+        vendorRepo.save(Vendor.builder().businessLicense("205-81-36868").vendorName("금하기계㈜").vendorAddress("경기도 김포시 대곶면 상마신기로 81-46").vendorPnumber("031-355-6497").vendorEmail("jmh@geumhwa.co.kr").PIC("조만현").build());
+        vendorRepo.save(Vendor.builder().businessLicense("613-81-21469").vendorName("(주)세양").vendorAddress("경기도 화성시 봉담읍 효행로184번길 5-17").vendorPnumber("031-223-1943").vendorEmail("hg0305@seyeang.com").PIC("정현곤").build());
+        vendorRepo.save(Vendor.builder().businessLicense("135-86-23166").vendorName("(주)스마트휴먼텍").vendorAddress("인천광역시 서구 원당대로480번길 2-1 가동").vendorPnumber("032-564-3080").vendorEmail("ntm@smart-ht.co.kr").PIC("노태문").build());
+        vendorRepo.save(Vendor.builder().businessLicense("620-21-70775").vendorName("대연정밀").vendorAddress("경기도 광주시 곤지암읍 원지길 58").vendorPnumber("031-970-2002").vendorEmail("mh1210@daeyeon.com").PIC("최민호").build());
+        vendorRepo.save(Vendor.builder().businessLicense("129-08-74643").vendorName("광동레이져").vendorAddress("경기도 양주시 은현면 화합로954번길 51-103").vendorPnumber("031-859-0492").vendorEmail("shlee@gwangdong.com").PIC("이성호").build());
+        vendorRepo.save(Vendor.builder().businessLicense("212-81-33699").vendorName("국광플랜").vendorAddress("서울특별시 성동구 성수일로 99 서울숲 AK밸리 410호").vendorPnumber("02-3409-0412").vendorEmail("gukgwang@gwplan.com").PIC("김지연").build());
+
+        itemInfoRepo.save(ItemInfo.builder().itemCode("BA001").itemName("메인보드1호").standard("7*15*1").texture("반도체").itemCount(1L).inventory(0L).drawingNumber("BA001_D").product(new Product("G1","갤럭시")).medium(new Medium("메인보드(A)",new Large("반도체(B)"))).build());
+        itemInfoRepo.save(ItemInfo.builder().itemCode("BS001").itemName("메모리카드1호").standard("2*3*1").texture("반도체").itemCount(1L).inventory(3L).drawingNumber("BS001_D").product(new Product("G1","갤럭시")).medium(new Medium("메모리카드(S)",new Large("반도체(B)"))).build());
+        itemInfoRepo.save(ItemInfo.builder().itemCode("CB001").itemName("브라켓1호").standard("3*5*1").texture("플라스틱").itemCount(6L).inventory(20L).drawingNumber("CB001_D").product(new Product("G1","갤럭시")).medium(new Medium("브라켓(B)",new Large("연결부품(C)"))).build());
+        itemInfoRepo.save(ItemInfo.builder().itemCode("CB002").itemName("브라켓2호").standard("3*5*2").texture("플라스틱").itemCount(8L).inventory(65L).drawingNumber("CB002_D").product(new Product("G1","갤럭시")).medium(new Medium("브라켓(B)",new Large("연결부품(C)"))).build());
+        itemInfoRepo.save(ItemInfo.builder().itemCode("CM001").itemName("나사1호").standard("2*4").texture("탄소강").itemCount(2L).inventory(250L).drawingNumber("CM001_D").product(new Product("G1","갤럭시")).medium(new Medium("나사(M)",new Large("연결부품(C)"))).build());
+        itemInfoRepo.save(ItemInfo.builder().itemCode("CM005").itemName("나사5호").standard("2*8").texture("탄소강").itemCount(10L).inventory(324L).drawingNumber("CM005_D").product(new Product("G1","갤럭시")).medium(new Medium("나사(M)",new Large("연결부품(C)"))).build());
+        itemInfoRepo.save(ItemInfo.builder().itemCode("GF001").itemName("액정1호").standard("15*18*1").texture("글라스").itemCount(1L).inventory(1L).drawingNumber("GF001_D").product(new Product("G1","갤럭시")).medium(new Medium("플랫(F)",new Large("액정(G)"))).build());
+
+    }
+
 
     @Override
     public List<ProcurementPlan> findById_ProductionPlan_ProductionPk(String productionPlanProductionPk) {

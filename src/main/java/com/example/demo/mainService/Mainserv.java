@@ -15,7 +15,8 @@ public interface Mainserv {
 //test 완성되면 정식으로 변경
     ProcurementPlan testtttttt(String procode,String itemcode);
 
-
+//더미데이터 넣기
+    void dummy();
 
 
 
