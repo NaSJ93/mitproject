@@ -27,9 +27,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//maria DB
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+//mysql용
+// https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
+	//implementation group: 'com.mysql', name: 'mysql-connector-j', version: '8.0.33'
 
 	//메일 관련
 	// https://mvnrepository.com/artifact/javax.mail/mail
