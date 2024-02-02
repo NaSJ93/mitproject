@@ -35,7 +35,7 @@ public class DemoCont {
     @GetMapping("/test")
     public String dummy(){
         mainserv.dummy();
-        return "/tables1-1";
+        return "tables1-1";
     }
 
 ///////////////////여기부터 로그인 맵핑
@@ -48,13 +48,13 @@ public String login(Model model) {
                     "password",
                     List.of(new SimpleGrantedAuthority("ROLE_USER"))) //AuthoDTO에는 인가 관련 메서드가 컬렉션 타입 그런List.of로 불러옴
     );
-    return "/login";
+    return "login";
 }
     @PostMapping("/login")
     public String loginProcess(AuthMemberDTO authMemberDTO){
         //여기서 로그인 처리를 수행
         //성공 시 리다이렉트를 할 경로를 반환
-        return "/index";
+        return "index";
     }
     @GetMapping("/logout")
     public void logout(){   }
@@ -132,7 +132,7 @@ public String login(Model model) {
         m.addAttribute("countCB",mainserv.countCB());
         m.addAttribute("countCM",mainserv.countCM());
         m.addAttribute("countGF",mainserv.countGF());
-        return "/tables1-1";
+        return "tables1-1";
     }
     @GetMapping({"/tables1-3", "/tables2-3", "/tables3-1","/InvoicePrint", "PurchasePrint", "/tables2-3copy"})
     public void aa() {
@@ -197,7 +197,7 @@ public String login(Model model) {
         m.addAttribute("countCB",mainserv.countCB());
         m.addAttribute("countCM",mainserv.countCM());
         m.addAttribute("countGF",mainserv.countGF());
-        return "/tables1-1";
+        return "tables1-1";
     }
 
 
@@ -315,7 +315,7 @@ public String login(Model model) {
         //검색결과를 모델에 추가
         m.addAttribute("contract", map);
         m.addAttribute("vendor",mainserv.findVendorAll());
-        return "/tables1-2";
+        return "tables1-2";
     }
 
     @PostMapping("tables1-3") //조달계획등록 페이지 출력
@@ -397,7 +397,7 @@ public String login(Model model) {
         }else{
             m.addAttribute("nothing","생산계획서에 없는 날짜입니다.");
         }
-        return "/tables1-3";
+        return "tables1-3";
     }
 
 
@@ -616,7 +616,7 @@ public String login(Model model) {
         }
 
 
-        return "/tables2-2";
+        return "tables2-2";
     }
 
 
@@ -902,7 +902,7 @@ public String login(Model model) {
         }else{
             m.addAttribute("nothing","생산계획서에 없는 날짜입니다.");
         }
-        return "/tables3-3";
+        return "tables3-3";
     }
 
 

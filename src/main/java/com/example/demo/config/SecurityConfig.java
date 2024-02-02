@@ -62,6 +62,7 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/",true)
                         .successHandler(new CustomAuthenticationSuccessHandler())
                         .loginPage("/login")
+                        //.permitAll()
                 )
                 //기본제공 로그아웃 폼  로그아웃은 미구현!
 //                .logout(withDefaults())

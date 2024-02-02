@@ -74,7 +74,7 @@ public class vendorPlanController {
 
         //삭제시 뭘 지웠는지 로그로 표현
         log.info(model.getAttribute("removeVendor"));
-        return "/vendorRegister";
+        return "vendorRegister";
     }
 
     @PostMapping("/registerVendor") //입력받은 제품키 , 제품명 저장
